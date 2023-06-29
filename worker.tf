@@ -52,7 +52,8 @@ resource "hcloud_server" "worker" {
           hcloud_primary_ip.controller_ipv6.*.ip_address,
           hcloud_primary_ip.worker_ipv4.*.ip_address,
           hcloud_primary_ip.worker_ipv6.*.ip_address,
-      )))
+      ))),
+      controller_lb_addresses = "",
     }
   )
   ssh_keys = [

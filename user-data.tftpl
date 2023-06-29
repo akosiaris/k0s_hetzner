@@ -36,6 +36,10 @@ write_files:
             # kubelet 10250/tcp
             # k0s-api 9443/tcp
             # konnectivity 8132/tcp, 8133/tcp
+            %{ if controller_lb_addresses != "" }
+            # Control Plane Load Balancer
+            saddr (${controller_lb_addresses}) proto tcp dport (6443 8132 9443) ACCEPT;
+            %{ endif }
             saddr (${ip_addresses}) proto tcp dport (179 2380 8132 8133 9443 10250) ACCEPT;
             saddr (${ip_addresses}) proto udp dport (4789) ACCEPT;
           }

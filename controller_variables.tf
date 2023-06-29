@@ -62,3 +62,13 @@ variable "single_controller_name" {
   description = "If you are deploying a single role, it's probably a pet. Name it"
   default     = "darkstar"
 }
+
+variable "controller_load_balancer_type" {
+  type        = string
+  description = "The load balancer type to deploy in front of the controllers"
+  default     = "lb11"
+  validation {
+    condition     = can(regex("lb[123]1", var.controller_load_balancer_type))
+    error_message = "Unsupported load balancer type provided"
+  }
+}
