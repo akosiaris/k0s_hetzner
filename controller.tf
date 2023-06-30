@@ -127,7 +127,7 @@ resource "hcloud_load_balancer_service" "cp_load_balancer_controller_api_service
 
 resource "hcloud_load_balancer_target" "cp_load_balancer_target" {
   type             = "server"
-  count            = var.controller_role == "single" ? 1 : var.controller_count
+  count            = var.controller_role == "single" ? 0 : var.controller_count
   load_balancer_id = hcloud_load_balancer.cp_load_balancer[0].id
   server_id        = hcloud_server.controller[count.index].id
 }
