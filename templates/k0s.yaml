@@ -40,7 +40,15 @@ spec:
     adminPort: 8133
     agentPort: 8132
   network:
-    calico: null
+    calico:
+      mode: vxlan
+      vxlanPort: 4789
+      vxlanVNI: 4096
+      mtu: 1450
+      wireguard: false
+      flexVolumeDriverPath: /usr/libexec/k0s/kubelet-plugins/volume/exec/nodeagent~uds
+      withWindowsNodes: false
+      overlay: Always
     clusterDomain: cluster.local
     dualStack: {}
     kubeProxy:
@@ -55,14 +63,6 @@ spec:
         udpTimeout: 0s
       metricsBindAddress: 0.0.0.0:10249
       mode: iptables
-    kuberouter:
-      autoMTU: true
-      hairpin: Enabled
-      ipMasq: false
-      metricsPort: 8080
-      mtu: 0
-      peerRouterASNs: ""
-      peerRouterIPs: ""
     nodeLocalLoadBalancing:
       envoyProxy:
         apiServerBindPort: 7443
@@ -72,7 +72,7 @@ spec:
         konnectivityServerBindPort: 7132
       type: EnvoyProxy
     podCIDR: 10.244.0.0/16
-    provider: kuberouter
+    provider: calico
     serviceCIDR: 10.96.0.0/12
   scheduler: {}
   storage:
