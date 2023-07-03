@@ -103,6 +103,7 @@ resource "hcloud_load_balancer" "cp_load_balancer" {
 
 resource "hcloud_load_balancer_service" "cp_load_balancer_kubernetes_service" {
   count            = var.controller_role == "single" ? 0 : 1
+  depends_on       = [hcloud_load_balancer.cp_load_balancer]
   load_balancer_id = hcloud_load_balancer.cp_load_balancer[0].id
   protocol         = "tcp"
   listen_port      = 6443
@@ -111,6 +112,7 @@ resource "hcloud_load_balancer_service" "cp_load_balancer_kubernetes_service" {
 
 resource "hcloud_load_balancer_service" "cp_load_balancer_konnectivity_service" {
   count            = var.controller_role == "single" ? 0 : 1
+  depends_on       = [hcloud_load_balancer.cp_load_balancer]
   load_balancer_id = hcloud_load_balancer.cp_load_balancer[0].id
   protocol         = "tcp"
   listen_port      = 8132
@@ -119,6 +121,7 @@ resource "hcloud_load_balancer_service" "cp_load_balancer_konnectivity_service" 
 
 resource "hcloud_load_balancer_service" "cp_load_balancer_controller_api_service" {
   count            = var.controller_role == "single" ? 0 : 1
+  depends_on       = [hcloud_load_balancer.cp_load_balancer]
   load_balancer_id = hcloud_load_balancer.cp_load_balancer[0].id
   protocol         = "tcp"
   listen_port      = 9443
@@ -127,6 +130,7 @@ resource "hcloud_load_balancer_service" "cp_load_balancer_controller_api_service
 
 resource "hcloud_load_balancer_target" "cp_load_balancer_target" {
   type             = "server"
+  depends_on       = [hcloud_load_balancer.cp_load_balancer]
   count            = var.controller_role == "single" ? 0 : var.controller_count
   load_balancer_id = hcloud_load_balancer.cp_load_balancer[0].id
   server_id        = hcloud_server.controller[count.index].id

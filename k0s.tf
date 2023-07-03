@@ -1,7 +1,8 @@
 # k0s resource to create a cluster and store a kubeconfig file
 resource "k0s_cluster" "k0s1" {
-  name    = var.domain
-  version = var.k0s_version
+  depends_on = [hcloud_load_balancer.cp_load_balancer]
+  name       = var.domain
+  version    = var.k0s_version
   config = templatefile("templates/k0s.yaml", {
     controller_lb_address = var.controller_role == "single" ? "" : hcloud_load_balancer.cp_load_balancer[0].ipv4,
     controller_ip_addresses = concat(
