@@ -9,7 +9,8 @@ locals {
       cidrs = join(" ", rule.cidrs),
     }
   }
-  role = replace(var.role, "+", "-")
+  role          = replace(var.role, "+", "-")
+  network_count = var.enable_network ? var.amount : 0
 }
 
 # Spread out for great chance a Hetzner outage doesn't impact us
@@ -63,4 +64,10 @@ resource "hcloud_server" "server" {
   provisioner "remote-exec" {
     inline = ["cloud-init status --wait"]
   }
+}
+
+resource "hcloud_server_network" "privnet" {
+  count     = local.network_count
+  server_id = hcloud_server.server[count.index].id
+  subnet_id = var.network_subnet_id
 }

@@ -81,3 +81,16 @@ variable "firewall_rules" {
     k8s-api = { proto = "tcp", ports = [6443], cidrs = ["0.0.0.0/0"] }
   }
 }
+
+# Hetzner private network
+variable "enable_network" {
+  type        = bool
+  description = "Enable a Hetzner private network"
+  default     = false
+}
+
+variable "network_subnet_id" {
+  type        = string
+  description = "The Hetzner private network subnet id. It should be the one obtained by a call to the child network module"
+  default     = null
+}
