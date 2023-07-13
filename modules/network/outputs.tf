@@ -18,3 +18,7 @@ output "lb_addresses" {
     ipv6 = hcloud_load_balancer.lb.*.ipv6,
   }
 }
+
+output "subnet_id" {
+  value = length(hcloud_network_subnet.privnet_subnet) > 0 ? one(hcloud_network_subnet.privnet_subnet).id : null
+}
