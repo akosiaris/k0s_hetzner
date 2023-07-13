@@ -166,3 +166,43 @@ variable "enable_ipv6" {
   description = "Whether an IPv6 address should be allocated"
   default     = true
 }
+
+variable "enable_private_network" {
+  type        = bool
+  description = "Whether to enable a Hetzner private network interconnecting all nodes or not"
+  default     = false
+}
+
+variable "network_ip_range" {
+  type        = string
+  description = "A CIDR in the RFC1918 space for the Hetzner private network. This is an umbrella entity, don't be frugal"
+  default     = "10.100.0.0/16"
+}
+
+variable "network_subnet_ip_range" {
+  type        = string
+  description = "A CIDR in the RFC1918 space for the Hetzner private network subnet. This needs to be part of the network_ip_range"
+  default     = "10.100.1.0/24"
+}
+
+variable "network_subnet_type" {
+  type        = string
+  description = "Either cloud of vswitch. vswitch is only possible if you also have a Hetzner Robot vswitch"
+  default     = "cloud"
+  validation {
+    condition     = contains(["cloud", "vswitch"], var.network_subnet_type)
+    error_message = "Unsupported load balanced protocol provided. We only support TCP for now"
+  }
+}
+
+variable "network_vswitch_id" {
+  type        = number
+  description = "ID of the vswitch, Required if type is vswitch"
+  default     = null
+}
+
+variable "network_zone" {
+  type        = string
+  description = "The Hetzner network zone. Stick to eu-central for now"
+  default     = "eu-central"
+}
