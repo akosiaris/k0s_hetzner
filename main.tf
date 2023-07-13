@@ -84,6 +84,7 @@ module "workers" {
       cidrs = concat(
         module.worker_ips.addresses["ipv6"],
         module.worker_ips.addresses["ipv4"],
+        [var.network_subnet_ip_range],
       ),
     }
     vxlan = {
@@ -92,6 +93,7 @@ module "workers" {
       cidrs = concat(
         module.worker_ips.addresses["ipv6"],
         module.worker_ips.addresses["ipv4"],
+        [var.network_subnet_ip_range],
       ),
     }
     kubelet = {
@@ -100,6 +102,7 @@ module "workers" {
       cidrs = concat(
         module.worker_ips.addresses["ipv6"],
         module.worker_ips.addresses["ipv4"],
+        [var.network_subnet_ip_range],
       ),
     }
     kubeproxy = {
@@ -108,6 +111,7 @@ module "workers" {
       cidrs = concat(
         module.worker_ips.addresses["ipv6"],
         module.worker_ips.addresses["ipv4"],
+        [var.network_subnet_ip_range],
       ),
     }
     prometheus_node_exporter = {
@@ -116,6 +120,7 @@ module "workers" {
       cidrs = concat(
         module.worker_ips.addresses["ipv6"],
         module.worker_ips.addresses["ipv4"],
+        [var.network_subnet_ip_range],
       ),
     }
   }
@@ -148,6 +153,7 @@ module "controllers" {
       cidrs = concat(
         module.controller_ips.addresses["ipv6"],
         module.controller_ips.addresses["ipv4"],
+        [var.network_subnet_ip_range],
       ),
     }
     konnectivity = {
@@ -156,6 +162,7 @@ module "controllers" {
       cidrs = concat(
         module.worker_ips.addresses["ipv6"],
         module.worker_ips.addresses["ipv4"],
+        [var.network_subnet_ip_range],
       ),
     }
     k0s-api = {
@@ -166,6 +173,7 @@ module "controllers" {
         module.worker_ips.addresses["ipv4"],
         module.controller_ips.addresses["ipv6"],
         module.controller_ips.addresses["ipv4"],
+        [var.network_subnet_ip_range],
       ),
     }
   }
