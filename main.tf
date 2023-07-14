@@ -40,27 +40,27 @@ module "worker_ips" {
   source = "./modules/network"
 
   amount      = local.worker_count
-  role                    = "worker"
+  role        = "worker"
+  domain      = var.domain
+  enable_ipv4 = var.enable_ipv4
+  enable_ipv6 = var.enable_ipv6
+}
+
+module "controller_ips" {
+  source = "./modules/network"
+
+  amount                  = local.controller_count
+  role                    = "controller"
   domain                  = var.domain
   enable_ipv4             = var.enable_ipv4
   enable_ipv6             = var.enable_ipv6
+  enable_balancer         = var.balance_control_plane
   enable_network          = var.enable_private_network
   network_ip_range        = var.network_ip_range
   network_subnet_type     = var.network_subnet_type
   network_subnet_ip_range = var.network_subnet_ip_range
   network_vswitch_id      = var.network_vswitch_id
   network_zone            = var.network_zone
-}
-
-module "controller_ips" {
-  source = "./modules/network"
-
-  amount          = local.controller_count
-  role            = "controller"
-  domain          = var.domain
-  enable_ipv4     = var.enable_ipv4
-  enable_ipv6     = var.enable_ipv6
-  enable_balancer = var.balance_control_plane
 }
 
 module "workers" {
@@ -76,7 +76,7 @@ module "workers" {
   domain            = var.domain
   ip_address_ids    = module.worker_ips.address_ids
   enable_network    = var.enable_private_network
-  network_subnet_id = module.worker_ips.subnet_id
+  network_subnet_id = module.controller_ips.subnet_id
   firewall_rules = {
     bgp = {
       proto = "tcp",
@@ -140,7 +140,7 @@ module "controllers" {
   hostname          = var.single_controller_hostname
   ip_address_ids    = module.controller_ips.address_ids
   enable_network    = var.enable_private_network
-  network_subnet_id = module.worker_ips.subnet_id
+  network_subnet_id = module.controller_ips.subnet_id
   firewall_rules = {
     k8s-api = {
       proto = "tcp",
