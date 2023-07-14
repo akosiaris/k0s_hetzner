@@ -14,8 +14,9 @@ output "address_ids" {
 
 output "lb_addresses" {
   value = {
-    ipv4 = hcloud_load_balancer.lb.*.ipv4,
-    ipv6 = hcloud_load_balancer.lb.*.ipv6,
+    ipv4    = hcloud_load_balancer.lb.*.ipv4,
+    ipv6    = hcloud_load_balancer.lb.*.ipv6,
+    private = hcloud_load_balancer_network.lb_privnet.*.ip,
   }
 }
 
