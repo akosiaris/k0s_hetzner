@@ -187,7 +187,7 @@ Other settings you can set in terraform.tfvars
 - [x] Decide whether to have the ssh key in user-data or as a terraform resource. Need to evaluate how the latter interacts with cloud-init, if at all
 - [x] Support Hetzner "private" networks
 - [x] Support vswitch type in Hetzner "private" networks
-- [ ] Support load balancers talking to private network targets
+- [x] Support load balancers talking to private network targets
 - [ ] Support almost fully isolated controllers+workers (no IPv6, no IPv4)
   - See k0sctl bastion hosts setting https://github.com/k0sproject/k0sctl#spechostsssh-mapping-optional
   - See upload binaries section: https://github.com/k0sproject/k0sctl#spechostsuploadbinary-boolean-optional-default-false
