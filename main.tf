@@ -192,14 +192,6 @@ module "k0s" {
   controller_addresses = module.controllers.addresses_ng
   worker_addresses     = module.workers.addresses_ng
 
-  worker_ips = (var.enable_ipv4 ?
-    module.workers.addresses["ipv4"] :
-    module.workers.addresses["ipv6"]
-  )
-  controller_ips = (var.enable_ipv4 ?
-    module.controllers.addresses["ipv4"] :
-    module.controllers.addresses["ipv6"]
-  )
   cp_balancer_ips = concat(
     module.controller_ips.lb_addresses["ipv4"],
     module.controller_ips.lb_addresses["ipv6"],

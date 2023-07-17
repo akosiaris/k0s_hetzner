@@ -71,18 +71,6 @@ variable "cp_balancer_ips" {
   default     = []
 }
 
-variable "worker_ips" {
-  type        = list(string)
-  description = "A list of IPv4/IPv6 addresses"
-  default     = []
-}
-
-variable "controller_ips" {
-  type        = list(string)
-  description = "A list of IPv4/IPv6 addresses"
-  default     = []
-}
-
 variable "controller_addresses" {
   type = map(object({
     public_ipv4  = optional(string),
