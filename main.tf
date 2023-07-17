@@ -179,29 +179,36 @@ module "controllers" {
   }
 }
 
+# This is the first module where we can refer to IP addresses from the output
+# of the server module and not the network module. This is because we now have
+# the data from the server module
 module "k0s" {
   source = "./modules/k0s"
 
-  domain              = var.domain
-  hcloud_token        = var.hcloud_token
-  hccm_enable         = var.hccm_enable
-  hcsi_enable         = var.hcsi_enable
-  hcsi_encryption_key = var.hcsi_encryption_key
-  prometheus_enable   = var.prometheus_enable
-  ssh_priv_key_path   = local.ssh_priv_key_path
-  controller_addresses = module.controllers.addresses_ng
-  worker_addresses     = module.workers.addresses_ng
+  domain               = var.domain
+  hcloud_token         = var.hcloud_token
+  hccm_enable          = var.hccm_enable
+  hcsi_enable          = var.hcsi_enable
+  hcsi_encryption_key  = var.hcsi_encryption_key
+  prometheus_enable    = var.prometheus_enable
+  ssh_priv_key_path    = local.ssh_priv_key_path
+  controller_addresses = module.controllers.addresses
+  worker_addresses     = module.workers.addresses
 
   cp_balancer_ips = concat(
     module.controller_ips.lb_addresses["ipv4"],
     module.controller_ips.lb_addresses["ipv6"],
   )
   #TODO: Take into account controller+worker too
-  externalIPs = var.controller_role == "single" ? concat(
-    module.controller_ips.addresses["ipv4"],
-    module.controller_ips.addresses["ipv6"],
-    ) : concat(
-    module.workers.addresses["ipv4"],
-    module.workers.addresses["ipv6"],
+  externalIPs = var.controller_role == "single" ? flatten(
+    [
+      for _, addresses in module.controllers.addresses :
+      compact(values(addresses))
+    ]
+    ) : flatten(
+    [
+      for _, addresses in module.workers.addresses :
+      compact(values(addresses))
+    ]
   )
 }
