@@ -84,20 +84,20 @@ variable "controller_ips" {
 }
 
 variable "controller_addresses" {
-  type        = map(object({
-    public_ipv4 = optional(string),
-    public_ipv6 = optional(string),
+  type = map(object({
+    public_ipv4  = optional(string),
+    public_ipv6  = optional(string),
     private_ipv4 = optional(string),
   }))
   description = "A map of objects containing IPv4/IPv6 public and private addresses"
 }
 
 variable "worker_addresses" {
-  type        = map(object({
-    public_ipv4 = optional(string),
-    public_ipv6 = optional(string),
+  type = map(object({
+    public_ipv4  = optional(string),
+    public_ipv6  = optional(string),
     private_ipv4 = optional(string),
   }))
   description = "A map of objects containing IPv4/IPv6 public and private addresses. Defaults to empty map"
-  default = {}
+  default     = {}
 }

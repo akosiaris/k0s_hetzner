@@ -189,6 +189,9 @@ module "k0s" {
   hcsi_encryption_key = var.hcsi_encryption_key
   prometheus_enable   = var.prometheus_enable
   ssh_priv_key_path   = local.ssh_priv_key_path
+  controller_addresses = module.controllers.addresses_ng
+  worker_addresses     = module.workers.addresses_ng
+
   worker_ips = (var.enable_ipv4 ?
     module.workers.addresses["ipv4"] :
     module.workers.addresses["ipv6"]
