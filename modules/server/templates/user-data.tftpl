@@ -12,28 +12,9 @@ package_update: true
 package_upgrade: true
 # We don't upgrade even if needed, as it breaks provisioners
 package_reboot_if_required: false
-# Install ferm for firewalling purposes, standard ferm firewalling is pretty strict
 # Install curl cause we 'll need it later
 packages:
-  - ferm
   - curl
-# Pre-populate (before ferm is even installed) ferm configuration file to allow
-# accessing the API
-write_files:
-  %{ for name, rule in firewall_rules }
-  - path: /etc/ferm/ferm.d/${ name }
-    permissions: "0640"
-    owner: "root:root"
-    content: |
-      domain (ip ip6) {
-        table filter {
-          chain INPUT {
-            # allow k8s api connections
-            saddr (${rule.cidrs}) proto ${rule.proto} dport (${rule.ports}) ACCEPT;
-          }
-        }
-      }
-  %{ endfor }
 # Don't allow SSH password auth, only ssh keys
 ssh_pwauth: false
 # Don't expire passwords, hetzner is creating a very strong one at the

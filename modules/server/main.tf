@@ -1,14 +1,6 @@
 locals {
-  enable_ipv6 = length(var.ip_address_ids["ipv6"]) > 0 ? true : false
-  enable_ipv4 = length(var.ip_address_ids["ipv4"]) > 0 ? true : false
-  firewall_rules = {
-    for name, rule in var.firewall_rules :
-    name => {
-      proto = rule.proto,
-      ports = join(" ", rule.ports),
-      cidrs = join(" ", rule.cidrs),
-    }
-  }
+  enable_ipv6   = length(var.ip_address_ids["ipv6"]) > 0 ? true : false
+  enable_ipv4   = length(var.ip_address_ids["ipv4"]) > 0 ? true : false
   role          = replace(var.role, "+", "-")
   network_count = var.enable_network ? var.amount : 0
 }
@@ -37,7 +29,6 @@ resource "hcloud_server" "server" {
         var.hostname != null ? var.hostname : "${local.role}-${count.index}",
         var.domain,
       )
-      firewall_rules = local.firewall_rules,
     }
   )
   ssh_keys = [
