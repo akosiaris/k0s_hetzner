@@ -63,38 +63,50 @@ module "controller_ips" {
   network_zone            = var.network_zone
 }
 
-module "workers" {
-  source = "./modules/server"
-
-  amount            = local.worker_count
-  type              = var.worker_server_type
-  image             = var.worker_server_image
-  datacenter        = var.worker_server_datacenter
-  role              = "worker"
-  ssh_pub_key_id    = hcloud_ssh_key.terraform-hcloud-k0s.id
-  ssh_priv_key_path = local.ssh_priv_key_path
-  domain            = var.domain
-  ip_address_ids    = module.worker_ips.address_ids
-  enable_network    = var.enable_private_network
-  network_subnet_id = module.controller_ips.subnet_id
-}
-
-module "controllers" {
-  source = "./modules/server"
-
-  amount            = local.controller_count
-  type              = var.controller_server_type
-  image             = var.controller_server_image
-  datacenter        = var.controller_server_datacenter
-  role              = var.controller_role
-  ssh_pub_key_id    = hcloud_ssh_key.terraform-hcloud-k0s.id
-  ssh_priv_key_path = local.ssh_priv_key_path
-  domain            = var.domain
-  hostname          = var.single_controller_hostname
-  ip_address_ids    = module.controller_ips.address_ids
-  enable_network    = var.enable_private_network
-  network_subnet_id = module.controller_ips.subnet_id
-  firewall_rules = {
+locals {
+  base_worker_firewall_rules = {
+    bgp = {
+      proto = "tcp",
+      port  = "179",
+      cidrs = concat(
+        module.worker_ips.addresses["ipv6"],
+        module.worker_ips.addresses["ipv4"],
+      ),
+    }
+    vxlan = {
+      proto = "udp",
+      port  = "4789",
+      cidrs = concat(
+        module.worker_ips.addresses["ipv6"],
+        module.worker_ips.addresses["ipv4"],
+      ),
+    }
+    kubelet = {
+      proto = "tcp",
+      port  = "10250",
+      cidrs = concat(
+        module.worker_ips.addresses["ipv6"],
+        module.worker_ips.addresses["ipv4"],
+      ),
+    }
+    kubeproxy = {
+      proto = "tcp",
+      port  = "10249",
+      cidrs = concat(
+        module.worker_ips.addresses["ipv6"],
+        module.worker_ips.addresses["ipv4"],
+      ),
+    }
+    prometheus_node_exporter = {
+      proto = "tcp",
+      port  = "9100",
+      cidrs = concat(
+        module.worker_ips.addresses["ipv6"],
+        module.worker_ips.addresses["ipv4"],
+      ),
+    }
+  }
+  base_controller_firewall_rules = {
     k8s-api = {
       proto = "tcp",
       port  = "6443",
@@ -130,6 +142,43 @@ module "controllers" {
       ),
     }
   }
+  # If the controller role is "controller+worker" then we are going to rely exclusively on Calico HostEndpoints
+  controller_firewall_rules = var.controller_role == "controller+worker" ? {} : local.base_controller_firewall_rules
+  worker_firewall_rules     = var.controller_role == "controller+worker" ? merge(local.base_controller_firewall_rules, local.base_worker_firewall_rules) : local.base_worker_firewall_rules
+}
+
+module "workers" {
+  source = "./modules/server"
+
+  amount            = local.worker_count
+  type              = var.worker_server_type
+  image             = var.worker_server_image
+  datacenter        = var.worker_server_datacenter
+  role              = "worker"
+  ssh_pub_key_id    = hcloud_ssh_key.terraform-hcloud-k0s.id
+  ssh_priv_key_path = local.ssh_priv_key_path
+  domain            = var.domain
+  ip_address_ids    = module.worker_ips.address_ids
+  enable_network    = var.enable_private_network
+  network_subnet_id = module.controller_ips.subnet_id
+}
+
+module "controllers" {
+  source = "./modules/server"
+
+  amount            = local.controller_count
+  type              = var.controller_server_type
+  image             = var.controller_server_image
+  datacenter        = var.controller_server_datacenter
+  role              = var.controller_role
+  ssh_pub_key_id    = hcloud_ssh_key.terraform-hcloud-k0s.id
+  ssh_priv_key_path = local.ssh_priv_key_path
+  domain            = var.domain
+  hostname          = var.single_controller_hostname
+  ip_address_ids    = module.controller_ips.address_ids
+  enable_network    = var.enable_private_network
+  network_subnet_id = module.controller_ips.subnet_id
+  firewall_rules    = local.controller_firewall_rules
 }
 
 # This is the first module where we can refer to IP addresses from the output
