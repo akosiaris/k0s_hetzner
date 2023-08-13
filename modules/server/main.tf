@@ -1,8 +1,9 @@
 locals {
-  enable_ipv6   = length(var.ip_address_ids["ipv6"]) > 0 ? true : false
-  enable_ipv4   = length(var.ip_address_ids["ipv4"]) > 0 ? true : false
-  role          = replace(var.role, "+", "-")
-  network_count = var.enable_network ? var.amount : 0
+  enable_ipv6     = length(var.ip_address_ids["ipv6"]) > 0 ? true : false
+  enable_ipv4     = length(var.ip_address_ids["ipv4"]) > 0 ? true : false
+  role            = replace(var.role, "+", "-")
+  network_count   = var.enable_network ? var.amount : 0
+  enable_firewall = length(var.firewall_rules) > 0 ? true : false
 }
 
 # Spread out for great chance a Hetzner outage doesn't impact us
@@ -57,8 +58,32 @@ resource "hcloud_server" "server" {
   }
 }
 
+# Attach the supplied private network to the server
 resource "hcloud_server_network" "privnet" {
   count     = local.network_count
   server_id = hcloud_server.server[count.index].id
   subnet_id = var.network_subnet_id
+}
+
+# Create firewall rules
+resource "hcloud_firewall" "firewall" {
+  count = local.enable_firewall ? 1 : 0
+  name  = "${local.role}-firewall"
+  dynamic "rule" {
+    for_each = var.firewall_rules
+    content {
+      description = rule.key
+      direction   = "in"
+      protocol    = rule.value["proto"]
+      port        = rule.value["port"]
+      source_ips  = rule.value["cidrs"]
+    }
+  }
+}
+
+# Attach firewall rules to servers
+resource "hcloud_firewall_attachment" "firewall_attachment" {
+  count       = local.enable_firewall ? 1 : 0
+  firewall_id = one(hcloud_firewall.firewall.*.id)
+  server_ids  = hcloud_server.server.*.id
 }

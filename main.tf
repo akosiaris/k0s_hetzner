@@ -77,53 +77,6 @@ module "workers" {
   ip_address_ids    = module.worker_ips.address_ids
   enable_network    = var.enable_private_network
   network_subnet_id = module.controller_ips.subnet_id
-  firewall_rules = {
-    bgp = {
-      proto = "tcp",
-      ports = [179],
-      cidrs = concat(
-        module.worker_ips.addresses["ipv6"],
-        module.worker_ips.addresses["ipv4"],
-        [var.network_subnet_ip_range],
-      ),
-    }
-    vxlan = {
-      proto = "udp",
-      ports = [4789],
-      cidrs = concat(
-        module.worker_ips.addresses["ipv6"],
-        module.worker_ips.addresses["ipv4"],
-        [var.network_subnet_ip_range],
-      ),
-    }
-    kubelet = {
-      proto = "tcp",
-      ports = [10250],
-      cidrs = concat(
-        module.worker_ips.addresses["ipv6"],
-        module.worker_ips.addresses["ipv4"],
-        [var.network_subnet_ip_range],
-      ),
-    }
-    kubeproxy = {
-      proto = "tcp",
-      ports = [10249],
-      cidrs = concat(
-        module.worker_ips.addresses["ipv6"],
-        module.worker_ips.addresses["ipv4"],
-        [var.network_subnet_ip_range],
-      ),
-    }
-    prometheus_node_exporter = {
-      proto = "tcp",
-      ports = [9100],
-      cidrs = concat(
-        module.worker_ips.addresses["ipv6"],
-        module.worker_ips.addresses["ipv4"],
-        [var.network_subnet_ip_range],
-      ),
-    }
-  }
 }
 
 module "controllers" {
@@ -144,12 +97,12 @@ module "controllers" {
   firewall_rules = {
     k8s-api = {
       proto = "tcp",
-      ports = [6443],
+      port  = "6443",
       cidrs = ["0.0.0.0/0"],
     }
     etcd = {
       proto = "tcp",
-      ports = [2380],
+      port  = "2380",
       cidrs = concat(
         module.controller_ips.addresses["ipv6"],
         module.controller_ips.addresses["ipv4"],
@@ -158,7 +111,7 @@ module "controllers" {
     }
     konnectivity = {
       proto = "tcp",
-      ports = [8132, 8133],
+      port  = "8132-8133",
       cidrs = concat(
         module.worker_ips.addresses["ipv6"],
         module.worker_ips.addresses["ipv4"],
@@ -167,7 +120,7 @@ module "controllers" {
     }
     k0s-api = {
       proto = "tcp",
-      ports = [9443],
+      port  = "9443",
       cidrs = concat(
         module.worker_ips.addresses["ipv6"],
         module.worker_ips.addresses["ipv4"],

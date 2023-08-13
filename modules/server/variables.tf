@@ -73,13 +73,11 @@ variable "hostname" {
 variable "firewall_rules" {
   type = map(object({
     proto = string
-    ports = list(number)
+    port  = string
     cidrs = list(string)
   }))
   description = "A map of firewall holes. The keys are arbitrary strings, the values objects with proto, ports, cidrs keys"
-  default = {
-    k8s-api = { proto = "tcp", ports = [6443], cidrs = ["0.0.0.0/0"] }
-  }
+  default     = {}
 }
 
 # Hetzner private network
