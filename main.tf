@@ -29,7 +29,7 @@ resource "local_file" "ssh_priv_key_path" {
   content         = nonsensitive(tls_private_key.ed25519[0].private_key_openssh)
 }
 
-resource "hcloud_ssh_key" "default" {
+resource "hcloud_ssh_key" "terraform-hcloud-k0s" {
   name = "hetzner"
   # We depend on the local_file because we want it created, before we create servers
   depends_on = [local_file.ssh_priv_key_path]
@@ -71,7 +71,7 @@ module "workers" {
   image             = var.worker_server_image
   datacenter        = var.worker_server_datacenter
   role              = "worker"
-  ssh_pub_key_id    = hcloud_ssh_key.default.id
+  ssh_pub_key_id    = hcloud_ssh_key.terraform-hcloud-k0s.id
   ssh_priv_key_path = local.ssh_priv_key_path
   domain            = var.domain
   ip_address_ids    = module.worker_ips.address_ids
@@ -134,7 +134,7 @@ module "controllers" {
   image             = var.controller_server_image
   datacenter        = var.controller_server_datacenter
   role              = var.controller_role
-  ssh_pub_key_id    = hcloud_ssh_key.default.id
+  ssh_pub_key_id    = hcloud_ssh_key.terraform-hcloud-k0s.id
   ssh_priv_key_path = local.ssh_priv_key_path
   domain            = var.domain
   hostname          = var.single_controller_hostname
