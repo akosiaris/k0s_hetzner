@@ -53,7 +53,7 @@ jobs:
         for fixture in .fixtures/*.tfvars;
         do
           echo -n "TESTING using: ${fixture} ..."
-          a=$(terraform plan -input=false -var-file $fixture)
+          a=$(terraform plan -input=false -var-file $fixture -refresh=false)
           if [ $? -eq 0 ]
           then
             echo "done"
