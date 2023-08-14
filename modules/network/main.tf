@@ -1,9 +1,10 @@
 locals {
-  ipv6_count          = var.enable_ipv6 ? var.amount : 0
-  ipv4_count          = var.enable_ipv4 ? var.amount : 0
-  role                = replace(var.role, "+", "-")
-  balancer_count      = (local.role == "single" || !var.enable_balancer) ? 0 : 1
-  balanced_port_count = local.balancer_count == 0 ? 0 : length(var.balanced_services)
+  ipv6_count             = var.enable_ipv6 ? var.amount : 0
+  ipv4_count             = var.enable_ipv4 ? var.amount : 0
+  role                   = replace(var.role, "+", "-")
+  balancer_count         = (local.role == "single" || !var.enable_balancer) ? 0 : 1
+  balanced_port_count    = local.balancer_count == 0 ? 0 : length(var.balanced_services)
+  balancer_privnet_count = (var.enable_network && local.balancer_count > 0) ? 1 : 0
 }
 
 # Create Primary IPs for servers. We need this to happen in a different step
@@ -90,4 +91,29 @@ resource "hcloud_rdns" "lb_ipv6" {
   load_balancer_id = hcloud_load_balancer.lb[0].id
   ip_address       = hcloud_load_balancer.lb[0].ipv6
   dns_ptr          = format("%s-%s.%s", "lb", local.role, var.domain)
+}
+
+# Hetzner private network
+resource "hcloud_network" "privnet" {
+  count    = var.enable_network ? 1 : 0
+  name     = "${local.role}-privnet"
+  ip_range = var.network_ip_range
+  labels = {
+    "role" : local.role
+  }
+}
+
+resource "hcloud_network_subnet" "privnet_subnet" {
+  count        = var.enable_network ? 1 : 0
+  network_id   = hcloud_network.privnet[0].id
+  type         = "cloud"
+  network_zone = var.network_zone
+  ip_range     = var.network_subnet_ip_range
+}
+
+resource "hcloud_load_balancer_network" "lb_privnet" {
+  count                   = local.balancer_privnet_count
+  load_balancer_id        = hcloud_load_balancer.lb[0].id
+  subnet_id               = hcloud_network_subnet.privnet_subnet[0].id
+  enable_public_interface = true # We definitely want the lb exposed to the public.
 }

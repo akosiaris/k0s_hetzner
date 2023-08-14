@@ -49,12 +49,18 @@ module "worker_ips" {
 module "controller_ips" {
   source = "./modules/network"
 
-  amount          = local.controller_count
-  role            = "controller"
-  domain          = var.domain
-  enable_ipv4     = var.enable_ipv4
-  enable_ipv6     = var.enable_ipv6
-  enable_balancer = var.balance_control_plane
+  amount                  = local.controller_count
+  role                    = "controller"
+  domain                  = var.domain
+  enable_ipv4             = var.enable_ipv4
+  enable_ipv6             = var.enable_ipv6
+  enable_balancer         = var.balance_control_plane
+  enable_network          = var.enable_private_network
+  network_ip_range        = var.network_ip_range
+  network_subnet_type     = var.network_subnet_type
+  network_subnet_ip_range = var.network_subnet_ip_range
+  network_vswitch_id      = var.network_vswitch_id
+  network_zone            = var.network_zone
 }
 
 module "workers" {
@@ -69,6 +75,8 @@ module "workers" {
   ssh_priv_key_path = local.ssh_priv_key_path
   domain            = var.domain
   ip_address_ids    = module.worker_ips.address_ids
+  enable_network    = var.enable_private_network
+  network_subnet_id = module.controller_ips.subnet_id
   firewall_rules = {
     bgp = {
       proto = "tcp",
@@ -76,6 +84,7 @@ module "workers" {
       cidrs = concat(
         module.worker_ips.addresses["ipv6"],
         module.worker_ips.addresses["ipv4"],
+        [var.network_subnet_ip_range],
       ),
     }
     vxlan = {
@@ -84,6 +93,7 @@ module "workers" {
       cidrs = concat(
         module.worker_ips.addresses["ipv6"],
         module.worker_ips.addresses["ipv4"],
+        [var.network_subnet_ip_range],
       ),
     }
     kubelet = {
@@ -92,6 +102,7 @@ module "workers" {
       cidrs = concat(
         module.worker_ips.addresses["ipv6"],
         module.worker_ips.addresses["ipv4"],
+        [var.network_subnet_ip_range],
       ),
     }
     kubeproxy = {
@@ -100,6 +111,7 @@ module "workers" {
       cidrs = concat(
         module.worker_ips.addresses["ipv6"],
         module.worker_ips.addresses["ipv4"],
+        [var.network_subnet_ip_range],
       ),
     }
     prometheus_node_exporter = {
@@ -108,6 +120,7 @@ module "workers" {
       cidrs = concat(
         module.worker_ips.addresses["ipv6"],
         module.worker_ips.addresses["ipv4"],
+        [var.network_subnet_ip_range],
       ),
     }
   }
@@ -126,6 +139,8 @@ module "controllers" {
   domain            = var.domain
   hostname          = var.single_controller_hostname
   ip_address_ids    = module.controller_ips.address_ids
+  enable_network    = var.enable_private_network
+  network_subnet_id = module.controller_ips.subnet_id
   firewall_rules = {
     k8s-api = {
       proto = "tcp",
@@ -138,6 +153,7 @@ module "controllers" {
       cidrs = concat(
         module.controller_ips.addresses["ipv6"],
         module.controller_ips.addresses["ipv4"],
+        [var.network_subnet_ip_range],
       ),
     }
     konnectivity = {
@@ -146,6 +162,7 @@ module "controllers" {
       cidrs = concat(
         module.worker_ips.addresses["ipv6"],
         module.worker_ips.addresses["ipv4"],
+        [var.network_subnet_ip_range],
       ),
     }
     k0s-api = {
@@ -156,39 +173,42 @@ module "controllers" {
         module.worker_ips.addresses["ipv4"],
         module.controller_ips.addresses["ipv6"],
         module.controller_ips.addresses["ipv4"],
+        [var.network_subnet_ip_range],
       ),
     }
   }
 }
 
+# This is the first module where we can refer to IP addresses from the output
+# of the server module and not the network module. This is because we now have
+# the data from the server module
 module "k0s" {
   source = "./modules/k0s"
 
-  domain              = var.domain
-  hcloud_token        = var.hcloud_token
-  hccm_enable         = var.hccm_enable
-  hcsi_enable         = var.hcsi_enable
-  hcsi_encryption_key = var.hcsi_encryption_key
-  prometheus_enable   = var.prometheus_enable
-  ssh_priv_key_path   = local.ssh_priv_key_path
-  worker_ips = (var.enable_ipv4 ?
-    module.workers.addresses["ipv4"] :
-    module.workers.addresses["ipv6"]
-  )
-  controller_ips = (var.enable_ipv4 ?
-    module.controllers.addresses["ipv4"] :
-    module.controllers.addresses["ipv6"]
-  )
+  domain               = var.domain
+  hcloud_token         = var.hcloud_token
+  hccm_enable          = var.hccm_enable
+  hcsi_enable          = var.hcsi_enable
+  hcsi_encryption_key  = var.hcsi_encryption_key
+  prometheus_enable    = var.prometheus_enable
+  ssh_priv_key_path    = local.ssh_priv_key_path
+  controller_addresses = module.controllers.addresses
+  worker_addresses     = module.workers.addresses
+
   cp_balancer_ips = concat(
     module.controller_ips.lb_addresses["ipv4"],
     module.controller_ips.lb_addresses["ipv6"],
   )
   #TODO: Take into account controller+worker too
-  externalIPs = var.controller_role == "single" ? concat(
-    module.controller_ips.addresses["ipv4"],
-    module.controller_ips.addresses["ipv6"],
-    ) : concat(
-    module.workers.addresses["ipv4"],
-    module.workers.addresses["ipv6"],
+  externalIPs = var.controller_role == "single" ? flatten(
+    [
+      for _, addresses in module.controllers.addresses :
+      compact(values(addresses))
+    ]
+    ) : flatten(
+    [
+      for _, addresses in module.workers.addresses :
+      compact(values(addresses))
+    ]
   )
 }
