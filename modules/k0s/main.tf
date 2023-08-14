@@ -9,6 +9,7 @@ resource "k0s_cluster" "k0s" {
   name    = var.domain
   version = var.k0s_version
   config = templatefile("modules/k0s/templates/k0s.tftpl", {
+    # TODO: Revisit this, it can probably be done better
     controller_lb_address   = length(var.cp_balancer_ips) > 0 ? var.cp_balancer_ips[0] : "",
     controller_ip_addresses = local.controller_ips,
   })

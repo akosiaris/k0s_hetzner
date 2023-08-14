@@ -65,7 +65,7 @@ resource "hcloud_load_balancer" "lb" {
 
 resource "hcloud_load_balancer_service" "service" {
   count            = local.balanced_port_count
-  load_balancer_id = hcloud_load_balancer.lb[0].id
+  load_balancer_id = one(hcloud_load_balancer.lb.*.id)
   protocol         = var.balanced_protocol
   listen_port      = var.balanced_services[count.index]
   destination_port = var.balanced_services[count.index]
@@ -74,22 +74,22 @@ resource "hcloud_load_balancer_service" "service" {
 resource "hcloud_load_balancer_target" "target" {
   count            = local.balancer_count
   type             = "label_selector"
-  load_balancer_id = hcloud_load_balancer.lb[0].id
+  load_balancer_id = one(hcloud_load_balancer.lb.*.id)
   label_selector   = "role=${local.role}"
 }
 
 # Balancer reverse DNS
 resource "hcloud_rdns" "lb_ipv4" {
   count            = local.balancer_count
-  load_balancer_id = hcloud_load_balancer.lb[0].id
-  ip_address       = hcloud_load_balancer.lb[0].ipv4
+  load_balancer_id = one(hcloud_load_balancer.lb.*.id)
+  ip_address       = one(hcloud_load_balancer.lb.*.ipv4)
   dns_ptr          = format("%s-%s.%s", "lb", local.role, var.domain)
 }
 
 resource "hcloud_rdns" "lb_ipv6" {
   count            = local.balancer_count
-  load_balancer_id = hcloud_load_balancer.lb[0].id
-  ip_address       = hcloud_load_balancer.lb[0].ipv6
+  load_balancer_id = one(hcloud_load_balancer.lb.*.id)
+  ip_address       = one(hcloud_load_balancer.lb.*.ipv6)
   dns_ptr          = format("%s-%s.%s", "lb", local.role, var.domain)
 }
 
@@ -105,7 +105,7 @@ resource "hcloud_network" "privnet" {
 
 resource "hcloud_network_subnet" "privnet_subnet" {
   count        = var.enable_network ? 1 : 0
-  network_id   = hcloud_network.privnet[0].id
+  network_id   = one(hcloud_network.privnet.*.id)
   type         = "cloud"
   network_zone = var.network_zone
   ip_range     = var.network_subnet_ip_range
@@ -113,7 +113,7 @@ resource "hcloud_network_subnet" "privnet_subnet" {
 
 resource "hcloud_load_balancer_network" "lb_privnet" {
   count                   = local.balancer_privnet_count
-  load_balancer_id        = hcloud_load_balancer.lb[0].id
-  subnet_id               = hcloud_network_subnet.privnet_subnet[0].id
+  load_balancer_id        = one(hcloud_load_balancer.lb.*.id)
+  subnet_id               = one(hcloud_network_subnet.privnet_subnet.*.id)
   enable_public_interface = true # We definitely want the lb exposed to the public.
 }

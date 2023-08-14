@@ -26,14 +26,14 @@ resource "local_file" "ssh_priv_key_path" {
   count           = local.create_keys ? 1 : 0
   filename        = local.ssh_priv_key_path
   file_permission = "0600"
-  content         = nonsensitive(tls_private_key.ed25519[0].private_key_openssh)
+  content         = nonsensitive(one(tls_private_key.ed25519.*.private_key_openssh))
 }
 
 resource "hcloud_ssh_key" "terraform-hcloud-k0s" {
   name = "hetzner"
   # We depend on the local_file because we want it created, before we create servers
   depends_on = [local_file.ssh_priv_key_path]
-  public_key = local.create_keys ? tls_private_key.ed25519[0].public_key_openssh : var.ssh_pub_key
+  public_key = local.create_keys ? one(tls_private_key.ed25519.*.public_key_openssh) : var.ssh_pub_key
 }
 
 module "worker_ips" {
