@@ -182,6 +182,21 @@ module "controllers" {
 # This is the first module where we can refer to IP addresses from the output
 # of the server module and not the network module. This is because we now have
 # the data from the server module
+#
+locals {
+  #TODO: Take into account controller+worker too
+  externalIPs = var.controller_role == "single" ? flatten(
+    [
+      for _, addresses in module.controllers.addresses :
+      compact(values(addresses))
+    ]
+    ) : flatten(
+    [
+      for _, addresses in module.workers.addresses :
+      compact(values(addresses))
+    ]
+  )
+}
 module "k0s" {
   source = "./modules/k0s"
 
@@ -199,16 +214,5 @@ module "k0s" {
     module.controller_ips.lb_addresses["ipv4"],
     module.controller_ips.lb_addresses["ipv6"],
   )
-  #TODO: Take into account controller+worker too
-  externalIPs = var.controller_role == "single" ? flatten(
-    [
-      for _, addresses in module.controllers.addresses :
-      compact(values(addresses))
-    ]
-    ) : flatten(
-    [
-      for _, addresses in module.workers.addresses :
-      compact(values(addresses))
-    ]
-  )
+  externalIPs = local.externalIPs
 }
