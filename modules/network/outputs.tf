@@ -2,6 +2,9 @@ output "addresses" {
   value = {
     ipv4 = hcloud_primary_ip.ipv4.*.ip_address,
     ipv6 = hcloud_primary_ip.ipv6.*.ip_address,
+    # The CIDR format is useful in hcloud_firewall resources
+    ipv4cidr = [for a in hcloud_primary_ip.ipv4 : "${a.ip_address}/32"],
+    ipv6cidr = [for a in hcloud_primary_ip.ipv6 : "${a.ip_address}/64"],
   }
 }
 

@@ -64,45 +64,63 @@ module "controller_ips" {
 }
 
 locals {
+  base_rules = {
+    icmp = {
+      proto = "icmp",
+      port  = null,
+      cidrs = [
+        "0.0.0.0/0",
+        "::/0",
+      ],
+    }
+    ssh = {
+      proto = "tcp",
+      port  = "22",
+      cidrs = [
+        "0.0.0.0/0",
+        "::/0",
+      ],
+    }
+  }
   base_worker_firewall_rules = {
     bgp = {
       proto = "tcp",
       port  = "179",
       cidrs = concat(
-        module.worker_ips.addresses["ipv6"],
-        module.worker_ips.addresses["ipv4"],
+        module.worker_ips.addresses["ipv6cidr"],
+        module.worker_ips.addresses["ipv4cidr"],
       ),
     }
     vxlan = {
       proto = "udp",
       port  = "4789",
       cidrs = concat(
-        module.worker_ips.addresses["ipv6"],
-        module.worker_ips.addresses["ipv4"],
+        module.worker_ips.addresses["ipv6cidr"],
+        module.worker_ips.addresses["ipv4cidr"],
       ),
     }
     kubelet = {
       proto = "tcp",
       port  = "10250",
       cidrs = concat(
-        module.worker_ips.addresses["ipv6"],
-        module.worker_ips.addresses["ipv4"],
+        module.worker_ips.addresses["ipv6cidr"],
+        module.worker_ips.addresses["ipv4cidr"],
       ),
     }
     kubeproxy = {
       proto = "tcp",
       port  = "10249",
       cidrs = concat(
-        module.worker_ips.addresses["ipv6"],
-        module.worker_ips.addresses["ipv4"],
+        module.worker_ips.addresses["ipv6cidr"],
+        module.worker_ips.addresses["ipv4cidr"],
       ),
     }
     prometheus_node_exporter = {
       proto = "tcp",
       port  = "9100",
       cidrs = concat(
-        module.worker_ips.addresses["ipv6"],
-        module.worker_ips.addresses["ipv4"],
+        module.worker_ips.addresses["ipv6cidr"],
+        module.worker_ips.addresses["ipv4cidr"],
       ),
     }
   }
@@ -110,14 +128,17 @@ locals {
     k8s-api = {
       proto = "tcp",
       port  = "6443",
-      cidrs = ["0.0.0.0/0"],
+      cidrs = [
+        "0.0.0.0/0",
+        "::/0",
+      ],
     }
     etcd = {
       proto = "tcp",
       port  = "2380",
       cidrs = concat(
-        module.controller_ips.addresses["ipv6"],
-        module.controller_ips.addresses["ipv4"],
+        module.controller_ips.addresses["ipv6cidr"],
+        module.controller_ips.addresses["ipv4cidr"],
         [var.network_subnet_ip_range],
       ),
     }
@@ -125,8 +146,8 @@ locals {
       proto = "tcp",
       port  = "8132-8133",
       cidrs = concat(
-        module.worker_ips.addresses["ipv6"],
-        module.worker_ips.addresses["ipv4"],
+        module.worker_ips.addresses["ipv6cidr"],
+        module.worker_ips.addresses["ipv4cidr"],
         [var.network_subnet_ip_range],
       ),
     }
@@ -134,17 +155,24 @@ locals {
       proto = "tcp",
       port  = "9443",
       cidrs = concat(
-        module.worker_ips.addresses["ipv6"],
-        module.worker_ips.addresses["ipv4"],
-        module.controller_ips.addresses["ipv6"],
-        module.controller_ips.addresses["ipv4"],
+        module.worker_ips.addresses["ipv6cidr"],
+        module.worker_ips.addresses["ipv4cidr"],
+        module.controller_ips.addresses["ipv6cidr"],
+        module.controller_ips.addresses["ipv4cidr"],
         [var.network_subnet_ip_range],
       ),
     }
   }
   # If the controller role is "controller+worker" then we are going to rely exclusively on Calico HostEndpoints
-  controller_firewall_rules = var.controller_role == "controller+worker" ? {} : local.base_controller_firewall_rules
-  worker_firewall_rules     = var.controller_role == "controller+worker" ? merge(local.base_controller_firewall_rules, local.base_worker_firewall_rules) : local.base_worker_firewall_rules
+  controller_firewall_rules = (
+    var.controller_role == "controller+worker" ? {} :
+    merge(local.base_rules, local.base_controller_firewall_rules)
+  )
+  worker_firewall_rules = (
+    var.controller_role == "controller+worker" ?
+    merge(local.base_rules, local.base_controller_firewall_rules, local.base_worker_firewall_rules) :
+    merge(local.base_rules, local.base_worker_firewall_rules)
+  )
 }
 
 module "workers" {
