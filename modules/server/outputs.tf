@@ -1,8 +1,7 @@
 output "addresses" {
   value = {
-    for s in hcloud_server.server.* :
+    for s in hcloud_server.server :
     s.name => {
-      name        = s.name,
       public_ipv4 = s.ipv4_address,
       public_ipv6 = s.ipv6_address,
       # TODO: This is ugly and pretty meh, we probably can do better
