@@ -30,7 +30,7 @@ resource "local_file" "ssh_priv_key_path" {
 }
 
 resource "hcloud_ssh_key" "terraform-hcloud-k0s" {
-  name = "hetzner"
+  name = "terraform-hcloud-k0s"
   # We depend on the local_file because we want it created, before we create servers
   depends_on = [local_file.ssh_priv_key_path]
   public_key = local.create_keys ? one(tls_private_key.ed25519.*.public_key_openssh) : var.ssh_pub_key
