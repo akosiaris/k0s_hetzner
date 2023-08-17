@@ -1,0 +1,25 @@
+{{- range $policy, $spec := .Values.GlobalNetworkPolicies }}
+apiVersion: crd.projectcalico.org/v1
+kind: GlobalNetworkPolicy
+metadata:
+  name: {{ $policy }}
+#  annotations:
+spec:
+  order: 0
+  selector: has(k0s-worker)
+  types:
+  - Ingress
+  ingress:
+  - action: Allow
+    destination:
+      {{- if $spec.port }}
+      ports:
+      - {{ $spec.port }}
+      {{- end }}
+    protocol: {{ upper $spec.proto }}
+    source:
+      nets:
+        {{- range $cidr := $spec.cidrs }}
+        - {{ $cidr }}
+        {{- end }}
+{{- end }}
