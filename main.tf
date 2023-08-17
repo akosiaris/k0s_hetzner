@@ -115,7 +115,7 @@ locals {
         module.worker_ips.addresses["ipv4cidr"],
       ),
     }
-    prometheus_node_exporter = {
+    prometheusnodeexporter = {
       proto = "tcp",
       port  = "9100",
       cidrs = concat(
@@ -239,6 +239,7 @@ module "k0s" {
   ssh_priv_key_path    = local.ssh_priv_key_path
   controller_addresses = module.controllers.addresses
   worker_addresses     = module.workers.addresses
+  firewall_rules       = local.worker_firewall_rules
 
   cp_balancer_ips = concat(
     module.controller_ips.lb_addresses["ipv4"],

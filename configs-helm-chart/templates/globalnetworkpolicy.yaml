@@ -3,7 +3,6 @@ apiVersion: crd.projectcalico.org/v1
 kind: GlobalNetworkPolicy
 metadata:
   name: {{ $policy }}
-#  annotations:
 spec:
   order: 0
   selector: has(k0s-worker)
@@ -14,7 +13,7 @@ spec:
     destination:
       {{- if $spec.port }}
       ports:
-      - {{ $spec.port }}
+        - {{ $spec.port | replace "-" ":" }}
       {{- end }}
     protocol: {{ upper $spec.proto }}
     source:
@@ -22,4 +21,5 @@ spec:
         {{- range $cidr := $spec.cidrs }}
         - {{ $cidr }}
         {{- end }}
+---
 {{- end }}

@@ -90,14 +90,21 @@ resource "helm_release" "hcloud-csi-driver" {
 
 locals {
   configs_workers = {
-    for worker, v in var.worker_addresses :
-    worker => {
-      expectedIPs = compact([
-        v["public_ipv4"],
-        v["public_ipv6"],
-        v["private_ipv4"],
-      ])
+    HostEndpoints = {
+      workers = {
+        for worker, v in var.worker_addresses :
+        worker => {
+          expectedIPs = compact([
+            v["public_ipv4"],
+            v["public_ipv6"],
+            v["private_ipv4"],
+          ])
+        }
+      }
     }
+  }
+  gnp = {
+    GlobalNetworkPolicies = var.firewall_rules
   }
 }
 
@@ -109,10 +116,10 @@ resource "helm_release" "terraform-hcloud-k0s-configs" {
   name      = "terraform-hcloud-k0s-configs"
   chart     = "./configs-helm-chart"
   namespace = "kube-system"
-  set {
-    name  = "HostEndpoints.workers"
-    value = yamlencode(local.configs_workers)
-  }
+  values = [
+    yamlencode(local.configs_workers),
+    yamlencode(local.gnp),
+  ]
 }
 
 resource "helm_release" "kube-stack-prometheus" {

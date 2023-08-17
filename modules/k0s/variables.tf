@@ -89,3 +89,13 @@ variable "worker_addresses" {
   description = "A map of objects containing IPv4/IPv6 public and private addresses. Defaults to empty map"
   default     = {}
 }
+
+variable "firewall_rules" {
+  type = map(object({
+    proto = string
+    port  = string
+    cidrs = list(string)
+  }))
+  description = "A map of firewall holes. The keys are arbitrary strings, the values objects with proto, ports, cidrs keys"
+  default     = {}
+}
