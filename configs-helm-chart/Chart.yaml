@@ -1,0 +1,5 @@
+apiVersion: v2
+name: configs-helm-chart
+description: A Helm chart to apply some Kubernetes stanza we require for this project
+type: application
+version: 0.1.0

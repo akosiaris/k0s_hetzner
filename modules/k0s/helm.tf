@@ -88,6 +88,33 @@ resource "helm_release" "hcloud-csi-driver" {
   }
 }
 
+locals {
+  configs_workers = {
+    for worker, v in var.worker_addresses :
+    worker => {
+      expectedIPs = compact([
+        v["public_ipv4"],
+        v["public_ipv6"],
+        v["private_ipv4"],
+      ])
+    }
+  }
+}
+
+resource "helm_release" "terraform-hcloud-k0s-configs" {
+  depends_on = [
+    k0s_cluster.k0s,
+    local_file.kubeconfig,
+  ]
+  name      = "terraform-hcloud-k0s-configs"
+  chart     = "./configs-helm-chart"
+  namespace = "kube-system"
+  set {
+    name  = "HostEndpoints.workers"
+    value = yamlencode(local.configs_workers)
+  }
+}
+
 resource "helm_release" "kube-stack-prometheus" {
   count = var.prometheus_enable ? 1 : 0
   depends_on = [

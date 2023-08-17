@@ -1,0 +1,17 @@
+HostEndpoints:
+  annotations: {}
+  workers: {}
+  # w1:
+  #   expectedIPs:
+  #     - 10.10.0.1
+  #     - 10.20.0.1
+  #   ports:
+  #     - name: some-port
+  #       port: 1234
+  #       protocol: TCP
+  #     - name: another-port
+  #       port: 5432
+  #       protocol: UDP
+  #   profiles:
+  #     - profile1
+  #     - profile2

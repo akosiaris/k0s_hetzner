@@ -1,0 +1,17 @@
+{{- $dot := . -}}
+{{- range $worker, $spec := .Values.HostEndpoints.workers }}
+apiVersion: crd.projectcalico.org/v1
+kind: HostEndpoint
+metadata:
+  name: {{ $worker }}-hep
+  {{- with $dot.Values.HostEndpoints.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  labels:
+    kubernetes-host: {{ $worker }}
+    {{- include "configs-helm-chart.labels" $dot | nindent 4 }}
+spec:
+  node: {{ $worker }}
+  {{- toYaml $spec | nindent 2 }}
+{{- end }}
