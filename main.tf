@@ -64,6 +64,11 @@ module "controller_ips" {
 }
 
 locals {
+  worker_cidrs = compact(concat(
+    module.worker_ips.addresses["ipv6cidr"],
+    module.worker_ips.addresses["ipv4cidr"],
+    var.enable_private_network ? [var.network_subnet_ip_range] : [],
+  ))
   base_rules = {
     icmp = {
       proto = "icmp",
@@ -86,42 +91,27 @@ locals {
     bgp = {
       proto = "tcp",
       port  = "179",
-      cidrs = concat(
-        module.worker_ips.addresses["ipv6cidr"],
-        module.worker_ips.addresses["ipv4cidr"],
-      ),
+      cidrs = local.worker_cidrs,
     }
     vxlan = {
       proto = "udp",
       port  = "4789",
-      cidrs = concat(
-        module.worker_ips.addresses["ipv6cidr"],
-        module.worker_ips.addresses["ipv4cidr"],
-      ),
+      cidrs = local.worker_cidrs,
     }
     kubelet = {
       proto = "tcp",
       port  = "10250",
-      cidrs = concat(
-        module.worker_ips.addresses["ipv6cidr"],
-        module.worker_ips.addresses["ipv4cidr"],
-      ),
+      cidrs = local.worker_cidrs,
     }
     kubeproxy = {
       proto = "tcp",
       port  = "10249",
-      cidrs = concat(
-        module.worker_ips.addresses["ipv6cidr"],
-        module.worker_ips.addresses["ipv4cidr"],
-      ),
+      cidrs = local.worker_cidrs,
     }
     prometheusnodeexporter = {
       proto = "tcp",
       port  = "9100",
-      cidrs = concat(
-        module.worker_ips.addresses["ipv6cidr"],
-        module.worker_ips.addresses["ipv4cidr"],
-      ),
+      cidrs = local.worker_cidrs,
     }
   }
   base_controller_firewall_rules = {
