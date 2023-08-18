@@ -69,6 +69,11 @@ locals {
     module.worker_ips.addresses["ipv4cidr"],
     var.enable_private_network ? [var.network_subnet_ip_range] : [],
   ))
+  controller_cidrs = compact(concat(
+    module.controller_ips.addresses["ipv6cidr"],
+    module.controller_ips.addresses["ipv4cidr"],
+    var.enable_private_network ? [var.network_subnet_ip_range] : [],
+  ))
   base_rules = {
     icmp = {
       proto = "icmp",
@@ -126,31 +131,18 @@ locals {
     etcd = {
       proto = "tcp",
       port  = "2380",
-      cidrs = concat(
-        module.controller_ips.addresses["ipv6cidr"],
-        module.controller_ips.addresses["ipv4cidr"],
-        [var.network_subnet_ip_range],
-      ),
+      cidrs = local.controller_cidrs,
     }
+    # Konnectivity is only accessed from workers
     konnectivity = {
       proto = "tcp",
       port  = "8132-8133",
-      cidrs = concat(
-        module.worker_ips.addresses["ipv6cidr"],
-        module.worker_ips.addresses["ipv4cidr"],
-        [var.network_subnet_ip_range],
-      ),
+      cidrs = local.worker_cidrs,
     }
     k0s-api = {
       proto = "tcp",
       port  = "9443",
-      cidrs = concat(
-        module.worker_ips.addresses["ipv6cidr"],
-        module.worker_ips.addresses["ipv4cidr"],
-        module.controller_ips.addresses["ipv6cidr"],
-        module.controller_ips.addresses["ipv4cidr"],
-        [var.network_subnet_ip_range],
-      ),
+      cidrs = concat(local.worker_cidrs, local.controller_cidrs),
     }
   }
   # If the controller role is "controller+worker" then we are going to rely exclusively on Calico HostEndpoints
