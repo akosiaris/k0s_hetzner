@@ -36,16 +36,32 @@ resource "hcloud_ssh_key" "terraform-hcloud-k0s" {
   public_key = local.create_keys ? one(tls_private_key.ed25519.*.public_key_openssh) : var.ssh_pub_key
 }
 
+# worker networking section
+locals {
+  extra_worker_ips = [
+    for _, addresses in var.extra_workers :
+    compact(concat(
+      addresses["public_ipv4"],
+      addresses["public_ipv6"],
+      addresses["private_ipv4"],
+    ))
+  ]
+}
+
 module "worker_ips" {
   source = "./modules/network"
 
-  amount      = local.worker_count
-  role        = "worker"
-  domain      = var.domain
-  enable_ipv4 = var.enable_ipv4
-  enable_ipv6 = var.enable_ipv6
+  amount            = local.worker_count
+  role              = "worker"
+  domain            = var.domain
+  enable_ipv4       = var.enable_ipv4
+  enable_ipv6       = var.enable_ipv6
+  enable_balancer   = var.balance_worker_plane
+  balanced_services = [80, 443]
+  balanced_extraIPs = local.extra_worker_ips
 }
 
+# controller networking section
 module "controller_ips" {
   source = "./modules/network"
 

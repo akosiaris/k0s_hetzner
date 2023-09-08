@@ -5,6 +5,7 @@ locals {
   balancer_count         = (local.role == "single" || !var.enable_balancer) ? 0 : 1
   balanced_port_count    = local.balancer_count == 0 ? 0 : length(var.balanced_services)
   balancer_privnet_count = (var.enable_network && local.balancer_count > 0) ? 1 : 0
+  balancer_extra_count   = (local.role == "single" || !var.enable_balancer) ? 0 : length(var.balanced_extraIPs)
   basename               = var.hostname != null ? var.hostname : local.role
 }
 
@@ -76,6 +77,13 @@ resource "hcloud_load_balancer_target" "target" {
   type             = "label_selector"
   load_balancer_id = one(hcloud_load_balancer.lb.*.id)
   label_selector   = "role=${local.role}"
+}
+
+resource "hcloud_load_balancer_target" "extra" {
+  count            = local.balancer_extra_count
+  type             = "ip"
+  load_balancer_id = one(hcloud_load_balancer.lb.*.id)
+  ip               = var.balanced_extraIPs[count.index]
 }
 
 # Balancer reverse DNS

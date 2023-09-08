@@ -28,6 +28,12 @@ variable "balance_control_plane" {
   default     = false
 }
 
+variable "balance_worker_plane" {
+  type        = bool
+  description = "Whether the control plane will be load balanced. Needs > 1 worker"
+  default     = false
+}
+
 variable "prometheus_enable" {
   type        = bool
   description = "Whether to enable the entire prometheus stack"
