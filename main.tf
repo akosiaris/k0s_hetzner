@@ -149,7 +149,7 @@ locals {
     k0s-api = {
       proto = "tcp",
       port  = "9443",
-      cidrs = toset(concat(local.worker_cidrs, local.controller_cidrs, local.control_plane_balancer_cidrs)),
+      cidrs = toset(concat(local.controller_cidrs, local.control_plane_balancer_cidrs)),
     }
   }
   # If the controller role is "controller+worker" then we are going to rely exclusively on Calico HostEndpoints
