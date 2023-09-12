@@ -20,6 +20,9 @@ output "lb_addresses" {
     ipv4    = hcloud_load_balancer.lb.*.ipv4,
     ipv6    = hcloud_load_balancer.lb.*.ipv6,
     private = hcloud_load_balancer_network.lb_privnet.*.ip,
+    # The CIDR format is useful in hcloud_firewall resources
+    ipv4cidr = [for a in hcloud_load_balancer.lb.*.ipv4 : "${a}/32"],
+    ipv6cidr = [for a in hcloud_load_balancer.lb.*.ipv6 : "${a}/128"],
   }
 }
 

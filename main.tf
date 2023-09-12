@@ -64,6 +64,10 @@ module "controller_ips" {
 }
 
 locals {
+  control_plane_balancer_cidrs = compact(concat(
+    module.controller_ips.lb_addresses["ipv6cidr"],
+    module.controller_ips.lb_addresses["ipv4cidr"],
+  ))
   worker_cidrs = compact(concat(
     module.worker_ips.addresses["ipv6cidr"],
     module.worker_ips.addresses["ipv4cidr"],
@@ -136,16 +140,16 @@ locals {
       port  = "2380",
       cidrs = local.controller_cidrs,
     }
-    # Konnectivity is only accessed from workers
+    # Konnectivity is only accessed from workers + balancer (if applicable)
     konnectivity = {
       proto = "tcp",
       port  = "8132-8133",
-      cidrs = local.worker_cidrs,
+      cidrs = toset(concat(local.worker_cidrs, local.control_plane_balancer_cidrs))
     }
     k0s-api = {
       proto = "tcp",
       port  = "9443",
-      cidrs = toset(concat(local.worker_cidrs, local.controller_cidrs)),
+      cidrs = toset(concat(local.worker_cidrs, local.controller_cidrs, local.control_plane_balancer_cidrs)),
     }
   }
   # If the controller role is "controller+worker" then we are going to rely exclusively on Calico HostEndpoints
