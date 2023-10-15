@@ -1,3 +1,4 @@
+<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
@@ -36,6 +37,7 @@
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_balance_control_plane"></a> [balance\_control\_plane](#input\_balance\_control\_plane) | Whether the control plane will be load balanced. Needs > 1 controller | `bool` | `false` | no |
+| <a name="input_balance_worker_plane"></a> [balance\_worker\_plane](#input\_balance\_worker\_plane) | Whether the control plane will be load balanced. Needs > 1 worker | `bool` | `false` | no |
 | <a name="input_controller_count"></a> [controller\_count](#input\_controller\_count) | The number of controllers. Defaults to 3 | `number` | `3` | no |
 | <a name="input_controller_role"></a> [controller\_role](#input\_controller\_role) | The k0s role for a controller. Values: controller, controller+worker, single | `string` | `"controller"` | no |
 | <a name="input_controller_server_datacenter"></a> [controller\_server\_datacenter](#input\_controller\_server\_datacenter) | The Hetzner datacenter name to create the server in. Values: nbg1-dc3, fsn1-dc14, hel1-dc2, ash-dc1 or hil-dc1 | `string` | `"fsn1-dc14"` | no |
@@ -72,3 +74,4 @@
 | <a name="output_controller_ip_addresses"></a> [controller\_ip\_addresses](#output\_controller\_ip\_addresses) | n/a |
 | <a name="output_lb_ip_addresses"></a> [lb\_ip\_addresses](#output\_lb\_ip\_addresses) | n/a |
 | <a name="output_worker_ip_addresses"></a> [worker\_ip\_addresses](#output\_worker\_ip\_addresses) | n/a |
+<!-- END_TF_DOCS -->

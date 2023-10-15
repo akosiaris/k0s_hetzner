@@ -81,6 +81,12 @@ variable "balanced_protocol" {
   }
 }
 
+variable "balanced_extraIPs" {
+  type        = list(string)
+  description = "A list of IPs belonging to non terraform managed resources that are going to be members of the k0s cluster"
+  default     = []
+}
+
 # Hetzner private network related variables
 variable "enable_network" {
   type        = bool
