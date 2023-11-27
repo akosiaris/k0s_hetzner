@@ -74,6 +74,14 @@ resource "helm_release" "hcloud-csi-driver" {
     name  = "EncryptedStorageClass.encryptionpassphrase"
     value = var.hcsi_encryption_key
   }
+  set {
+    name  = "storageClass.reclaimPolicy"
+    value = "Retain"
+  }
+  set {
+    name  = "EncryptedStorageClass.reclaimPolicy"
+    value = "Retain"
+  }
 }
 
 locals {
