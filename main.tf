@@ -66,7 +66,7 @@ module "controller_ips" {
   source = "./modules/network"
 
   amount                  = local.controller_count
-  role                    = "controller"
+  role                    = var.controller_role
   domain                  = var.domain
   enable_ipv4             = var.enable_ipv4
   enable_ipv6             = var.enable_ipv6
