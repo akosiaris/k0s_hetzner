@@ -40,14 +40,14 @@ resource "hcloud_rdns" "ipv4" {
   count         = local.ipv4_count
   primary_ip_id = hcloud_primary_ip.ipv4[count.index].id
   ip_address    = hcloud_primary_ip.ipv4[count.index].ip_address
-  dns_ptr       = format("%s-%s.%s", local.basename, count.index, var.domain)
+  dns_ptr       = local.role == "single" ? format("%s.%s", local.basename, var.domain) : format("%s-%s.%s", local.basename, count.index, var.domain)
 }
 
 resource "hcloud_rdns" "ipv6" {
   count         = local.ipv6_count
   primary_ip_id = hcloud_primary_ip.ipv6[count.index].id
   ip_address    = hcloud_primary_ip.ipv6[count.index].ip_address
-  dns_ptr       = format("%s-%s.%s", local.basename, count.index, var.domain)
+  dns_ptr       = local.role == "single" ? format("%s.%s", local.basename, var.domain) : format("%s-%s.%s", local.basename, count.index, var.domain)
 }
 
 # Balancer section
