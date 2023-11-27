@@ -60,10 +60,10 @@ variable "domain" {
 
 variable "k0s_version" {
   type        = string
-  description = "The version of k0s to target. Default: 1.27.5+k0s.0"
-  default     = "1.27.5+k0s.0"
+  description = "The version of k0s to target"
+  default     = "1.28.4+k0s.0"
   validation {
-    condition     = can(regex("1.27.[23456789]\\+k0s\\.0", var.k0s_version))
+    condition     = can(regex("1.2[78].[23456789]\\+k0s\\.0", var.k0s_version))
     error_message = "Unsupported k0s version provided"
   }
 }

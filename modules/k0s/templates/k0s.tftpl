@@ -16,10 +16,8 @@ spec:
     - ${addr}
     %{ endfor }
     - 127.0.0.1
-    address: null
     k0sApiPort: 9443
     port: 6443
-    tunneledNetworkingMode: false
   controllerManager: {}
   extensions:
     helm:
@@ -66,9 +64,6 @@ spec:
     nodeLocalLoadBalancing:
       envoyProxy:
         apiServerBindPort: 7443
-        image:
-          image: quay.io/k0sproject/envoy-distroless
-          version: v1.24.1
         konnectivityServerBindPort: 7132
       type: EnvoyProxy
     podCIDR: 10.244.0.0/16
@@ -78,8 +73,6 @@ spec:
   storage:
     etcd:
       externalCluster: null
-      peerAddress: null
     type: etcd
   telemetry:
     enabled: false
-status: {}
