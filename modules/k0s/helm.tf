@@ -77,7 +77,7 @@ resource "helm_release" "hcloud-csi-driver" {
 }
 
 locals {
-  controller_hpes = var.controller_role == "controller+worker" ? var.controller_addresses : {}
+  controller_hpes = (var.controller_role == "controller+worker" || var.controller_role == "single") ? var.controller_addresses : {}
   hpes = {
     for hpe, v in merge(local.controller_hpes, var.worker_addresses) :
     hpe => {

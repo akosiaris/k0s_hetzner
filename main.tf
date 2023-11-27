@@ -89,7 +89,7 @@ locals {
     module.worker_ips.addresses["ipv6cidr"],
     module.worker_ips.addresses["ipv4cidr"],
     var.enable_private_network ? [var.network_subnet_ip_range] : [],
-    var.controller_role == "controller+worker" ? concat(
+    (var.controller_role == "controller+worker" || var.controller_role == "single") ? concat(
       module.controller_ips.addresses["ipv6cidr"],
     module.controller_ips.addresses["ipv4cidr"]) : []
   ))
@@ -152,16 +152,15 @@ locals {
         "::/0",
       ],
     }
-    etcd = {
-      proto = "tcp",
-      port  = "2380",
-      cidrs = local.controller_cidrs,
-    }
-    # Konnectivity is only accessed from workers + balancer (if applicable)
     konnectivity = {
       proto = "tcp",
       port  = "8132-8133",
       cidrs = toset(concat(local.worker_cidrs, local.control_plane_balancer_cidrs))
+    }
+    etcd = {
+      proto = "tcp",
+      port  = "2380",
+      cidrs = local.controller_cidrs,
     }
     k0s-api = {
       proto = "tcp",
@@ -169,13 +168,13 @@ locals {
       cidrs = toset(concat(local.controller_cidrs, local.control_plane_balancer_cidrs)),
     }
   }
-  # If the controller role is "controller+worker" then we are going to rely exclusively on Calico HostEndpoints
+  # If the controller role is "controller+worker" or single then we are going to rely exclusively on Calico HostEndpoints.
   controller_firewall_rules = (
-    var.controller_role == "controller+worker" ? {} :
+    (var.controller_role == "controller+worker" || var.controller_role == "single") ? {} :
     merge(local.base_rules, local.base_controller_firewall_rules)
   )
   worker_firewall_rules = (
-    var.controller_role == "controller+worker" ?
+    (var.controller_role == "controller+worker" || var.controller_role == "single") ?
     merge(local.base_rules, local.base_controller_firewall_rules, local.base_worker_firewall_rules) :
     merge(local.base_rules, local.base_worker_firewall_rules)
   )
