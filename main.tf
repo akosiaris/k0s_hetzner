@@ -77,6 +77,7 @@ module "controller_ips" {
   network_subnet_ip_range = var.network_subnet_ip_range
   network_vswitch_id      = var.network_vswitch_id
   network_zone            = var.network_zone
+  hostname                = var.single_controller_hostname
 }
 
 locals {
