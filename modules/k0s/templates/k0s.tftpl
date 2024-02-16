@@ -18,6 +18,8 @@ spec:
     - 127.0.0.1
     k0sApiPort: 9443
     port: 6443
+    extraArgs:
+      service-node-port-range: 1-65535
   controllerManager: {}
   extensions:
     helm:
