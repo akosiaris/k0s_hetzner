@@ -21,6 +21,17 @@ resource "helm_release" "cert-manager" {
   }
 }
 
+locals {
+  ingress_nginx_values = {
+    controller = {
+      service = {
+        type        = var.ingress_service_type
+        externalIPs = var.ingress_service_type == "NodePort" ? [] : var.externalIPs
+      }
+    }
+  }
+}
+
 resource "helm_release" "ingress-nginx" {
   depends_on = [
     k0s_cluster.k0s,
@@ -31,15 +42,9 @@ resource "helm_release" "ingress-nginx" {
   chart      = "ingress-nginx"
   namespace  = "kube-system"
   version    = "4.7.0"
-
-  set {
-    name  = "controller.service.type"
-    value = var.ingress_service_type
-  }
-  set_list {
-    name  = "controller.service.externalIPs"
-    value = var.externalIPs
-  }
+  values = [
+    yamlencode(local.ingress_nginx_values)
+  ]
 }
 
 resource "helm_release" "hccm" {
