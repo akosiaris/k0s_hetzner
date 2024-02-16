@@ -34,7 +34,7 @@ resource "helm_release" "ingress-nginx" {
 
   set {
     name  = "controller.service.type"
-    value = "ClusterIP"
+    value = var.ingress_service_type
   }
   set_list {
     name  = "controller.service.externalIPs"
