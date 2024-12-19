@@ -37,7 +37,7 @@ variable "balance_worker_plane" {
 variable "prometheus_enable" {
   type        = bool
   description = "Whether to enable the entire prometheus stack"
-  default     = true
+  default     = false
 }
 
 variable "ssh_pub_key" {
