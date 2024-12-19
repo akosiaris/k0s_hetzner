@@ -18,6 +18,7 @@ HostEndpoints:
 GlobalNetworkPolicies:
   # policyname:
   #   proto: TCP
+  #   order: 10
   #   port: 22
   #   cidrs:
   #     - 10.10.10.10/32

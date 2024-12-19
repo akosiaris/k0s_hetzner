@@ -22,7 +22,7 @@ kind: GlobalNetworkPolicy
 metadata:
   name: {{ $policy }}
 spec:
-  order: 0
+  order: {{ $spec.order | default "10" }}
   selector: has(k0s-worker)
   types:
     - Ingress
