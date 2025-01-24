@@ -249,7 +249,6 @@ module "k0s" {
   controller_addresses = module.controllers.addresses
   worker_addresses     = local.worker_addresses
   firewall_rules       = local.worker_firewall_rules
-  ingress_service_type = var.ingress_service_type
 
   cp_balancer_ips = concat(
     module.controller_ips.lb_addresses["ipv4"],

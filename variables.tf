@@ -68,16 +68,6 @@ variable "k0s_version" {
   }
 }
 
-variable "ingress_service_type" {
-  type        = string
-  description = "What type of Kubernetes service to use for the Ingress"
-  default     = "ClusterIP"
-  validation {
-    condition     = can(regex("ClusterIP|NodePort|LoadBalancer", var.ingress_service_type))
-    error_message = "Unsupported Kubernetes Service type"
-  }
-}
-
 # Worker specific variables
 variable "worker_count" {
   type        = number

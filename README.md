@@ -194,4 +194,3 @@ See [variables.md](variables.md)
   - [x] controllers: Move to hetzner's firewalling functionality.
 - [x] Test PVC moves between nodes
 - [x] Support non terraform managed (e.g. baremetal) workers
-- [ ] Support ingress NodePort service type

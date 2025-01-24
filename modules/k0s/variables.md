@@ -23,10 +23,8 @@ No modules.
 
 | Name | Type |
 |------|------|
-| [helm_release.cert-manager](https://registry.terraform.io/providers/hashicorp/helm/2.10.1/docs/resources/release) | resource |
 | [helm_release.hccm](https://registry.terraform.io/providers/hashicorp/helm/2.10.1/docs/resources/release) | resource |
 | [helm_release.hcloud-csi-driver](https://registry.terraform.io/providers/hashicorp/helm/2.10.1/docs/resources/release) | resource |
-| [helm_release.ingress-nginx](https://registry.terraform.io/providers/hashicorp/helm/2.10.1/docs/resources/release) | resource |
 | [helm_release.kube-stack-prometheus](https://registry.terraform.io/providers/hashicorp/helm/2.10.1/docs/resources/release) | resource |
 | [helm_release.terraform-hcloud-k0s-configs](https://registry.terraform.io/providers/hashicorp/helm/2.10.1/docs/resources/release) | resource |
 | [k0s_cluster.k0s](https://registry.terraform.io/providers/alessiodionisi/k0s/0.2.1/docs/resources/cluster) | resource |
@@ -40,7 +38,6 @@ No modules.
 | <a name="input_controller_role"></a> [controller\_role](#input\_controller\_role) | The k0s role for a controller. Values: controller, controller+worker, single | `string` | `"controller"` | no |
 | <a name="input_cp_balancer_ips"></a> [cp\_balancer\_ips](#input\_cp\_balancer\_ips) | If balancing the control-plane, its IPs | `list(string)` | `[]` | no |
 | <a name="input_domain"></a> [domain](#input\_domain) | The domain of all hosts. Will be used to generate all PTRs and names | `string` | n/a | yes |
-| <a name="input_externalIPs"></a> [externalIPs](#input\_externalIPs) | Ingress-nginxs externalIPs setting. Needs to match at least the IPs of the workers | `list(string)` | `[]` | no |
 | <a name="input_firewall_rules"></a> [firewall\_rules](#input\_firewall\_rules) | A map of firewall holes. The keys are arbitrary strings, the values objects with proto, ports, cidrs keys | <pre>map(object({<br>    proto = string<br>    port  = string<br>    cidrs = list(string)<br>  }))</pre> | `{}` | no |
 | <a name="input_hccm_enable"></a> [hccm\_enable](#input\_hccm\_enable) | Whether or not the Hetzner Cloud controller manager will be installed | `bool` | `true` | no |
 | <a name="input_hcloud_token"></a> [hcloud\_token](#input\_hcloud\_token) | Value of the Hetzner token | `string` | n/a | yes |

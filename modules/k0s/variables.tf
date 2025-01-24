@@ -44,15 +44,6 @@ variable "prometheus_enable" {
   default     = true
 }
 
-variable "ingress_service_type" {
-  type        = string
-  description = "What type of Kubernetes service to use for the Ingress"
-  validation {
-    condition     = can(regex("ClusterIP|NodePort|LoadBalancer", var.ingress_service_type))
-    error_message = "Unsupported Kubernetes Service type"
-  }
-}
-
 variable "externalIPs" {
   type        = list(string)
   description = "Ingress-nginxs externalIPs setting. Needs to match at least the IPs of the workers"

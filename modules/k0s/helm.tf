@@ -1,52 +1,5 @@
 # Note: don't go overboard adding helm charts in this file. It is meant just
 # for infrastructural stuff, not generic applications
-resource "helm_release" "cert-manager" {
-  depends_on = [
-    k0s_cluster.k0s,
-    local_file.kubeconfig
-  ]
-  name       = "cert-manager"
-  repository = "https://charts.jetstack.io"
-  chart      = "cert-manager"
-  namespace  = "kube-system"
-  version    = "1.12.0"
-
-  set {
-    name  = "installCRDs"
-    value = "true"
-  }
-  set {
-    name  = "prometheus.enabled"
-    value = "true"
-  }
-}
-
-locals {
-  ingress_nginx_values = {
-    controller = {
-      service = {
-        type        = var.ingress_service_type
-        externalIPs = var.ingress_service_type == "NodePort" ? [] : var.externalIPs
-      }
-    }
-  }
-}
-
-resource "helm_release" "ingress-nginx" {
-  depends_on = [
-    k0s_cluster.k0s,
-    local_file.kubeconfig
-  ]
-  name       = "ingress-nginx"
-  repository = "https://kubernetes.github.io/ingress-nginx"
-  chart      = "ingress-nginx"
-  namespace  = "kube-system"
-  version    = "4.12.0"
-  values = [
-    yamlencode(local.ingress_nginx_values)
-  ]
-}
-
 resource "helm_release" "hccm" {
   # Versioning policy at https://github.com/hetznercloud/hcloud-cloud-controller-manager#versioning-policy
   count = var.hccm_enable ? 1 : 0
