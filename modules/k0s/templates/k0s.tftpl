@@ -26,9 +26,6 @@ spec:
       charts: null
       concurrencyLevel: 5
       repositories: null
-    storage:
-      create_default_storage_class: false
-      type: external_storage
   installConfig:
     users:
       etcdUser: etcd
@@ -50,7 +47,8 @@ spec:
       withWindowsNodes: false
       overlay: Always
     clusterDomain: cluster.local
-    dualStack: {}
+    dualStack:
+      enabled: false
     kubeProxy:
       iptables:
         minSyncPeriod: 0s
@@ -64,6 +62,7 @@ spec:
       metricsBindAddress: 0.0.0.0:10249
       mode: iptables
     nodeLocalLoadBalancing:
+      enabled: false
       envoyProxy:
         apiServerBindPort: 7443
         konnectivityServerBindPort: 7132
