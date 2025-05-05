@@ -34,4 +34,4 @@ override.tf.json
 terraform.rc
 
 # Ignore the created kubeconfig file, we don't want to commit it to the repo
-kubeconfig
+kubeconfig-*
