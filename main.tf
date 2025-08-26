@@ -4,7 +4,7 @@ provider "hcloud" {
 }
 
 provider "helm" {
-  kubernetes {
+  kubernetes = {
     config_path = "kubeconfig-${var.domain}"
   }
 }

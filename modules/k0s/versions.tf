@@ -3,11 +3,11 @@ terraform {
   required_providers {
     local = {
       source  = "hashicorp/local"
-      version = "2.4.1"
+      version = "2.5.3"
     }
     helm = {
       source  = "hashicorp/helm"
-      version = "2.12.1"
+      version = "3.0.2"
     }
     k0s = {
       source  = "alessiodionisi/k0s"

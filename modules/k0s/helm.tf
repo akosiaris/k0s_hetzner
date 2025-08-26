@@ -28,18 +28,20 @@ resource "helm_release" "hcloud-csi-driver" {
   name      = "hcloud-csi-driver"
   chart     = "./hcloud-csi-driver-helm-chart"
   namespace = "kube-system"
-  set {
-    name  = "EncryptedStorageClass.encryptionpassphrase"
-    value = var.hcsi_encryption_key
-  }
-  set {
-    name  = "storageClass.reclaimPolicy"
-    value = "Retain"
-  }
-  set {
-    name  = "EncryptedStorageClass.reclaimPolicy"
-    value = "Retain"
-  }
+  set = [
+    {
+      name  = "EncryptedStorageClass.encryptionpassphrase"
+      value = var.hcsi_encryption_key
+    },
+    {
+      name  = "storageClass.reclaimPolicy"
+      value = "Retain"
+    },
+    {
+      name  = "EncryptedStorageClass.reclaimPolicy"
+      value = "Retain"
+    }
+  ]
 }
 
 locals {
@@ -77,10 +79,12 @@ resource "helm_release" "terraform-hcloud-k0s-configs" {
     yamlencode(local.configs_workers),
     yamlencode(local.gnp),
   ]
-  set {
-    name  = "hcloud_token"
-    value = local.hcloud_token
-  }
+  set = [
+    {
+      name  = "hcloud_token"
+      value = local.hcloud_token
+    }
+  ]
 }
 
 resource "helm_release" "kube-stack-prometheus" {
