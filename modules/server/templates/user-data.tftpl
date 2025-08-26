@@ -16,6 +16,7 @@ package_reboot_if_required: false
 packages:
   - curl
   - btop
+  - tcpdump
 # Don't allow SSH password auth, only ssh keys
 ssh_pwauth: false
 # Don't expire passwords, hetzner is creating a very strong one at the
@@ -24,9 +25,8 @@ chpasswd:
   expire: False
 timezone: Europe/Athens
 fqdn: ${fqdn}
-# Add some locales and make sure we don't use iptables-nft, it still is a mess
-# with kubernetes
-bootcmd:
+# Add some locales and make sure we don't use iptables-nft. It is supported past 1.33, but not yet tested with k0s+Calico
+runcmd:
   - echo "el_GR.UTF-8 UTF-8" >> /etc/locale.gen
   - echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
   - [ locale-gen ]
