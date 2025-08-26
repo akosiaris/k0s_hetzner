@@ -13,7 +13,7 @@ resource "helm_release" "hccm" {
   chart      = "hcloud-cloud-controller-manager"
   namespace  = "kube-system"
   # Versioning policy at https://github.com/hetznercloud/hcloud-cloud-controller-manager#versioning-policy
-  version = "1.16.0"
+  version = "1.26.0"
 }
 
 resource "helm_release" "hcloud-csi-driver" {
