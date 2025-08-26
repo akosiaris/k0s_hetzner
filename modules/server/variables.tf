@@ -35,13 +35,7 @@ variable "ip_address_ids" {
 
 variable "type" {
   type        = string
-  description = "The Hetzner cloud server type. Defaults to cax11"
-  # arm64 machine
-  default = "cax11"
-  validation {
-    condition     = can(regex("c[apc]?x[1234]1", var.type))
-    error_message = "Unsupported server type provided"
-  }
+  description = "The Hetzner cloud server type"
 }
 
 variable "image" {
