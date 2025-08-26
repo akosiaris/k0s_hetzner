@@ -16,6 +16,28 @@ resource "helm_release" "hccm" {
   version = "1.26.0"
 }
 
+locals {
+  hcsiconfig = {
+    node = {
+      kubeletDir = "/var/lib/k0s/kubelet"
+    }
+    storageClasses = [
+      {
+        name          = "hcloud-volumes"
+        reclaimPolicy = "Delete"
+      },
+      {
+        name          = "hcloud-volumes-encrypted"
+        reclaimPolicy = "Retain"
+        extraParameters = {
+          "csi.storage.k8s.io/node-publish-secret-name"      = "encryption-secret"
+          "csi.storage.k8s.io/node-publish-secret-namespace" = "kube-system"
+        }
+      },
+    ]
+  }
+}
+
 resource "helm_release" "hcloud-csi-driver" {
   # Versioning policy at https://github.com/hetznercloud/csi-driver/blob/main/docs/kubernetes/README.md#versioning-policy
   count = var.hcsi_enable ? 1 : 0
@@ -25,22 +47,13 @@ resource "helm_release" "hcloud-csi-driver" {
     helm_release.hccm,
     helm_release.terraform-hcloud-k0s-configs,
   ]
-  name      = "hcloud-csi-driver"
-  chart     = "./hcloud-csi-driver-helm-chart"
-  namespace = "kube-system"
-  set = [
-    {
-      name  = "EncryptedStorageClass.encryptionpassphrase"
-      value = var.hcsi_encryption_key
-    },
-    {
-      name  = "storageClass.reclaimPolicy"
-      value = "Retain"
-    },
-    {
-      name  = "EncryptedStorageClass.reclaimPolicy"
-      value = "Retain"
-    }
+  name       = "hcloud-csi-driver"
+  repository = "https://charts.hetzner.cloud"
+  chart      = "hcloud-csi"
+  namespace  = "kube-system"
+  version    = "v2.13.0"
+  values = [
+    yamlencode(local.hcsiconfig),
   ]
 }
 
@@ -65,6 +78,9 @@ locals {
     GlobalNetworkPolicies = var.firewall_rules
   }
   hcloud_token = (var.hccm_enable || var.hcsi_enable) ? var.hcloud_token : null
+  sc-encryption = {
+    hcsi_encryption_key = var.hcsi_encryption_key
+  }
 }
 
 resource "helm_release" "terraform-hcloud-k0s-configs" {
@@ -78,6 +94,7 @@ resource "helm_release" "terraform-hcloud-k0s-configs" {
   values = [
     yamlencode(local.configs_workers),
     yamlencode(local.gnp),
+    yamlencode(local.sc-encryption),
   ]
   set = [
     {

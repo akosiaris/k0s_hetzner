@@ -24,3 +24,4 @@ GlobalNetworkPolicies:
   #     - 10.10.10.10/32
   #
 #hcloud_token:
+#hcsi_encryption_key
