@@ -34,12 +34,6 @@ variable "balance_worker_plane" {
   default     = false
 }
 
-variable "prometheus_enable" {
-  type        = bool
-  description = "Whether to enable the entire prometheus stack"
-  default     = false
-}
-
 variable "ssh_pub_key" {
   type        = string
   description = "Public SSH key for connecting to servers. If left empty, terraform will create a key pair for you"

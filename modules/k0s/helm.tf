@@ -86,16 +86,3 @@ resource "helm_release" "terraform-hcloud-k0s-configs" {
     }
   ]
 }
-
-resource "helm_release" "kube-stack-prometheus" {
-  count = var.prometheus_enable ? 1 : 0
-  depends_on = [
-    k0s_cluster.k0s,
-    local_file.kubeconfig,
-  ]
-  name       = "prometheus"
-  repository = "https://prometheus-community.github.io/helm-charts"
-  chart      = "kube-prometheus-stack"
-  namespace  = "kube-system"
-  version    = "47.0.0"
-}

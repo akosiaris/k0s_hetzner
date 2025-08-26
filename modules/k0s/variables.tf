@@ -38,12 +38,6 @@ variable "hcsi_encryption_key" {
   default     = ""
 }
 
-variable "prometheus_enable" {
-  type        = bool
-  description = "Whether to enable the entire prometheus stack"
-  default     = true
-}
-
 variable "externalIPs" {
   type        = list(string)
   description = "Ingress-nginxs externalIPs setting. Needs to match at least the IPs of the workers"

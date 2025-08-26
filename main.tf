@@ -137,11 +137,6 @@ locals {
       port  = "10249",
       cidrs = local.worker_cidrs,
     }
-    prometheusnodeexporter = {
-      proto = "tcp",
-      port  = "9100",
-      cidrs = local.worker_cidrs,
-    }
   }
   base_controller_firewall_rules = {
     k8s-api = {
@@ -244,7 +239,6 @@ module "k0s" {
   hccm_enable          = local.hccm_enable
   hcsi_enable          = var.hcsi_enable
   hcsi_encryption_key  = var.hcsi_encryption_key
-  prometheus_enable    = var.prometheus_enable
   ssh_priv_key_path    = local.ssh_priv_key_path
   controller_addresses = module.controllers.addresses
   worker_addresses     = local.worker_addresses
