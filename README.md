@@ -188,7 +188,7 @@ See [variables.md](variables.md)
 - [x] Write more docs
 - [x] Support Debian 12
 - [x] Upstream amended CSI driver helm chart - Rejected, won't happen
-- [ ] Switch to using upstream CSI helm chart - https://github.com/hetznercloud/csi-driver/blob/main/docs/kubernetes/README.md#getting-started
+- [x] Switch to using upstream CSI helm chart - https://github.com/hetznercloud/csi-driver/blob/main/docs/kubernetes/README.md#getting-started
 - [x] Replace ferm:
   - [x] workers: Move to Calico Host Endpoints and GlobalNetwork policies
   - [x] controllers: Move to hetzner's firewalling functionality.
