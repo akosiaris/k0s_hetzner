@@ -3,7 +3,7 @@ output "controller_ip_addresses" {
 }
 
 output "worker_ip_addresses" {
-  value = merge(module.workers.addresses, var.extra_workers)
+  value = merge(try(module.workers.addresses, {}), var.extra_workers)
 }
 
 output "lb_ip_addresses" {

@@ -35,6 +35,7 @@ variable "hcsi_enable" {
 variable "hcsi_encryption_key" {
   type        = string
   description = "If specified, a Kubernetes StorageClass with LUKS encryption will become available"
+  sensitive   = true # Requires terraform >= 0.14
   default     = ""
 }
 

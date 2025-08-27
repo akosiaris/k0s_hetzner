@@ -10,8 +10,10 @@ provider "helm" {
 }
 
 locals {
-  controller_count  = var.controller_role == "single" ? 1 : var.controller_count
-  worker_count      = var.controller_role == "single" ? 0 : var.worker_count
+  controller_count = var.controller_role == "single" ? 1 : var.controller_count
+  worker_count     = var.controller_role == "single" ? 0 : var.worker_count
+  # This is a trick to allow to not instantiate the worker module at all
+  worker_enabled    = local.worker_count == 0 ? false : true
   create_keys       = (var.ssh_pub_key == null || var.ssh_priv_key_path == null) ? true : false
   ssh_priv_key_path = var.ssh_priv_key_path == null ? "id_ed25519_${var.domain}" : var.ssh_priv_key_path
 }
@@ -177,6 +179,8 @@ locals {
 
 module "workers" {
   source = "./modules/server"
+  # This is a trick to allow to not instantiate the worker module at all
+  for_each = local.worker_enabled ? { "enabled" = true } : {}
 
   amount            = local.worker_count
   type              = var.worker_server_type
@@ -226,7 +230,7 @@ locals {
     ]
   )
 
-  worker_addresses = merge(module.workers.addresses, var.extra_workers)
+  worker_addresses = merge(try(module.workers.addresses, {}), var.extra_workers)
   hccm_enable      = length(var.extra_workers) > 0 ? false : var.hccm_enable
 }
 module "k0s" {
