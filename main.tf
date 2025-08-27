@@ -225,7 +225,7 @@ locals {
     ]
     ) : flatten(
     [
-      for _, addresses in module.workers.addresses :
+      for _, addresses in try(module.workers.addresses, {}) :
       compact(values(addresses))
     ]
   )
