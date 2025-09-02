@@ -1,4 +1,0 @@
-Thank you for installing {{ .Chart.Name }}!
-
-In case of general problems with Hetzner Cloud csi-driver you can get help here:
-  https://github.com/hetznercloud/csi-driver
