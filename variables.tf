@@ -42,6 +42,22 @@ variable "hcsi_encrypted_reclaim_policy" {
   }
 }
 
+variable "lsp_reclaim_policy" {
+  type        = string
+  description = "The reclaim policy of local-storage"
+  default     = "Delete"
+  validation {
+    condition     = can(regex("Retain|Delete", var.lsp_reclaim_policy))
+    error_message = "Unsupported reclaim policy"
+  }
+}
+
+variable "lsp_isDefault" {
+  type        = bool
+  description = "Whether Local Static Provisioner is the default Storage Class or not"
+  default     = true
+}
+
 variable "balance_control_plane" {
   type        = bool
   description = "Whether the control plane will be load balanced. Needs > 1 controller"

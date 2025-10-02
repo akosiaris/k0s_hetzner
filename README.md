@@ -165,8 +165,11 @@ See [variables.md](variables.md)
 
 # Persistent Volumes
 
-This solution supports 2 different Kubernetes CSI API StorageClass types. The
-first one would be Hetzner Cloud Volumes. There are 2 variants, plain and
+This solution supports 2 different Kubernetes CSI API StorageClass types.
+
+## Hetzner Cloud volumes
+
+The first one would be Hetzner Cloud Volumes. There are 2 variants, plain and
 encrypted. The encrypted one requires that a specific variable is passed as the
 encryption key to become available. Look into variables.md for more information
 on how to configure it. Neither is set as the default, application needs to
@@ -184,6 +187,33 @@ Reclaim policies can be configured as well, again look into variables.md.
 
 Volume expansion is support by Hetzner Cloud, it comes in increments of 10GB
 and only requires updating the PersistentVolumeClaim
+
+## Local Static Provisioner
+
+The second CSI API Storage Class type supported is the Local Static
+Provisioner. This one is reusing the filesystem on the hosts and is also set up
+as the default. The reason for this is ease of evaluation of various
+applications, while offering cost savings, however the following things should
+be noted:
+
+* The data stays with the host the pod has been scheduled on. Should the host
+  fail, the data is lost. Make sure you have backups!
+* Encryption is NOT supported here. Make sure you have a threat model and are
+  ok with that about access to that data
+* The space is overcommitted. Meaning applications can use more than they request
+* The place where data is stored is hardcoded as /mnt/local-storage
+* The implementation uses bind mounts, the volume are pre created and are
+  present under /mnt/k8s-storage
+* Up to 10 volumes are currently pre created. If you reach that limit, it's
+  probably a sign you are overusing this Storage Class
+
+Getting information about these requires a call like:
+
+```
+$ kubectl get storageclasses.storage.k8s.io
+NAME                       PROVISIONER                    RECLAIMPOLICY   VOLUMEBINDINGMODE      ALLOWVOLUMEEXPANSION   AGE
+local-storage (default)    kubernetes.io/no-provisioner   Delete          WaitForFirstConsumer   false                  35d
+```
 
 # TODO
 

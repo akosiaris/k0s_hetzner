@@ -65,8 +65,8 @@ locals {
         name    = "local-storage"
         hostDir = "/mnt/local-storage"
         storageClass = {
-          reclaimPolicy  = "Delete",
-          isDefaultClass = true,
+          reclaimPolicy  = var.lsp_reclaim_policy,
+          isDefaultClass = var.lsp_isDefault,
         }
       },
     ]

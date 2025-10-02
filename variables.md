@@ -50,8 +50,12 @@
 | <a name="input_hccm_enable"></a> [hccm\_enable](#input\_hccm\_enable) | Whether or not the Hetzner Cloud controller manager will be installed | `bool` | `true` | no |
 | <a name="input_hcloud_token"></a> [hcloud\_token](#input\_hcloud\_token) | Value of the Hetzner token | `string` | n/a | yes |
 | <a name="input_hcsi_enable"></a> [hcsi\_enable](#input\_hcsi\_enable) | Whether or not the Hetzner CSI (Cloud Storage Interface) will be installed | `bool` | `true` | no |
+| <a name="input_hcsi_encrypted_reclaim_policy"></a> [hcsi\_encrypted\_reclaim\_policy](#input\_hcsi\_encrypted\_reclaim\_policy) | The reclaim policy of hcloud-volumes-encrypted | `string` | `"Delete"` | no |
 | <a name="input_hcsi_encryption_key"></a> [hcsi\_encryption\_key](#input\_hcsi\_encryption\_key) | If specified, a Kubernetes StorageClass with LUKS encryption will become available | `string` | `""` | no |
+| <a name="input_hcsi_reclaim_policy"></a> [hcsi\_reclaim\_policy](#input\_hcsi\_reclaim\_policy) | The reclaim policy of hcloud-volumes | `string` | `"Delete"` | no |
 | <a name="input_k0s_version"></a> [k0s\_version](#input\_k0s\_version) | The version of k0s to target | `string` | `"1.33.4+k0s.0"` | no |
+| <a name="input_lsp_isDefault"></a> [lsp\_isDefault](#input\_lsp\_isDefault) | Whether Local Static Provisioner is the default Storage Class or not | `bool` | `true` | no |
+| <a name="input_lsp_reclaim_policy"></a> [lsp\_reclaim\_policy](#input\_lsp\_reclaim\_policy) | The reclaim policy of local-storage | `string` | `"Delete"` | no |
 | <a name="input_network_ip_range"></a> [network\_ip\_range](#input\_network\_ip\_range) | A CIDR in the RFC1918 space for the Hetzner private network. This is an umbrella entity, don't be frugal | `string` | `"10.100.0.0/16"` | no |
 | <a name="input_network_subnet_ip_range"></a> [network\_subnet\_ip\_range](#input\_network\_subnet\_ip\_range) | A CIDR in the RFC1918 space for the Hetzner private network subnet. This needs to be part of the network\_ip\_range | `string` | `"10.100.1.0/24"` | no |
 | <a name="input_network_subnet_type"></a> [network\_subnet\_type](#input\_network\_subnet\_type) | Either cloud of vswitch. vswitch is only possible if you also have a Hetzner Robot vswitch | `string` | `"cloud"` | no |

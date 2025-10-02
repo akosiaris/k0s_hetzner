@@ -42,8 +42,12 @@ No modules.
 | <a name="input_hccm_enable"></a> [hccm\_enable](#input\_hccm\_enable) | Whether or not the Hetzner Cloud controller manager will be installed | `bool` | `true` | no |
 | <a name="input_hcloud_token"></a> [hcloud\_token](#input\_hcloud\_token) | Value of the Hetzner token | `string` | n/a | yes |
 | <a name="input_hcsi_enable"></a> [hcsi\_enable](#input\_hcsi\_enable) | Whether or not the Hetzner CSI (Cloud Storage Interface) will be installed | `bool` | `true` | no |
+| <a name="input_hcsi_encrypted_reclaim_policy"></a> [hcsi\_encrypted\_reclaim\_policy](#input\_hcsi\_encrypted\_reclaim\_policy) | The reclaim policy of hcloud-volumes-encrypted | `string` | n/a | yes |
 | <a name="input_hcsi_encryption_key"></a> [hcsi\_encryption\_key](#input\_hcsi\_encryption\_key) | If specified, a Kubernetes StorageClass with LUKS encryption will become available | `string` | `""` | no |
+| <a name="input_hcsi_reclaim_policy"></a> [hcsi\_reclaim\_policy](#input\_hcsi\_reclaim\_policy) | The reclaim policy of hcloud-volumes | `string` | n/a | yes |
 | <a name="input_k0s_version"></a> [k0s\_version](#input\_k0s\_version) | The version of k0s to target | `string` | n/a | yes |
+| <a name="input_lsp_isDefault"></a> [lsp\_isDefault](#input\_lsp\_isDefault) | Whether Local Static Provisioner is the default Storage Class or not | `bool` | n/a | yes |
+| <a name="input_lsp_reclaim_policy"></a> [lsp\_reclaim\_policy](#input\_lsp\_reclaim\_policy) | The reclaim policy of local-storage | `string` | n/a | yes |
 | <a name="input_ssh_priv_key_path"></a> [ssh\_priv\_key\_path](#input\_ssh\_priv\_key\_path) | The private part of the above | `string` | n/a | yes |
 | <a name="input_worker_addresses"></a> [worker\_addresses](#input\_worker\_addresses) | A map of objects containing IPv4/IPv6 public and private addresses. Defaults to empty map | <pre>map(object({<br/>    public_ipv4  = optional(string),<br/>    public_ipv6  = optional(string),<br/>    private_ipv4 = optional(string),<br/>  }))</pre> | `{}` | no |
 

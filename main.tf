@@ -249,6 +249,8 @@ module "k0s" {
   firewall_rules                = local.worker_firewall_rules
   hcsi_reclaim_policy           = var.hcsi_reclaim_policy
   hcsi_encrypted_reclaim_policy = var.hcsi_encrypted_reclaim_policy
+  lsp_reclaim_policy            = var.lsp_reclaim_policy
+  lsp_isDefault                 = var.lsp_isDefault
 
   cp_balancer_ips = concat(
     module.controller_ips.lb_addresses["ipv4"],
