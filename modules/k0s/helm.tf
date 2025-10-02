@@ -58,6 +58,35 @@ resource "helm_release" "hcloud-csi-driver" {
 }
 
 locals {
+  lsp = {
+    classes = [
+      {
+        name = "local-storage"
+        hostDir = "/mnt/local-storage"
+        storageClass = {
+          reclaimPolicy = "Delete",
+          isDefaultClass = true,
+        }
+      },
+    ]
+  }
+}
+
+resource "helm_release" "local-static-provisioner" {
+  depends_on = [
+    k0s_cluster.k0s,
+    local_file.kubeconfig,
+  ]
+  name = "local-static-provisioner"
+  repository = "https://kubernetes-sigs.github.io/sig-storage-local-static-provisioner"
+  chart = "local-static-provisioner"
+  namespace  = "kube-system"
+  values = [
+    yamlencode(local.lsp),
+  ]
+}
+
+locals {
   controller_hpes = (var.controller_role == "controller+worker" || var.controller_role == "single") ? var.controller_addresses : {}
   hpes = {
     for hpe, v in merge(local.controller_hpes, var.worker_addresses) :
