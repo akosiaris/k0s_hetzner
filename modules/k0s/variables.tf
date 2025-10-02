@@ -32,11 +32,29 @@ variable "hcsi_enable" {
   default     = true
 }
 
+variable "hcsi_reclaim_policy" {
+  type        = string
+  description = "The reclaim policy of hcloud-volumes"
+  validation {
+    condition     = can(regex("Retain|Delete", var.hcsi_reclaim_policy))
+    error_message = "Unsupported reclaim policy"
+  }
+}
+
 variable "hcsi_encryption_key" {
   type        = string
   description = "If specified, a Kubernetes StorageClass with LUKS encryption will become available"
   sensitive   = true # Requires terraform >= 0.14
   default     = ""
+}
+
+variable "hcsi_encrypted_reclaim_policy" {
+  type        = string
+  description = "The reclaim policy of hcloud-volumes-encrypted"
+  validation {
+    condition     = can(regex("Retain|Delete", var.hcsi_encrypted_reclaim_policy))
+    error_message = "Unsupported reclaim policy"
+  }
 }
 
 variable "externalIPs" {

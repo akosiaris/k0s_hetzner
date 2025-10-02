@@ -236,17 +236,19 @@ locals {
 module "k0s" {
   source = "./modules/k0s"
 
-  domain               = var.domain
-  k0s_version          = var.k0s_version
-  controller_role      = var.controller_role
-  hcloud_token         = var.hcloud_token
-  hccm_enable          = local.hccm_enable
-  hcsi_enable          = var.hcsi_enable
-  hcsi_encryption_key  = var.hcsi_encryption_key
-  ssh_priv_key_path    = local.ssh_priv_key_path
-  controller_addresses = module.controllers.addresses
-  worker_addresses     = local.worker_addresses
-  firewall_rules       = local.worker_firewall_rules
+  domain                        = var.domain
+  k0s_version                   = var.k0s_version
+  controller_role               = var.controller_role
+  hcloud_token                  = var.hcloud_token
+  hccm_enable                   = local.hccm_enable
+  hcsi_enable                   = var.hcsi_enable
+  hcsi_encryption_key           = var.hcsi_encryption_key
+  ssh_priv_key_path             = local.ssh_priv_key_path
+  controller_addresses          = module.controllers.addresses
+  worker_addresses              = local.worker_addresses
+  firewall_rules                = local.worker_firewall_rules
+  hcsi_reclaim_policy           = var.hcsi_reclaim_policy
+  hcsi_encrypted_reclaim_policy = var.hcsi_encrypted_reclaim_policy
 
   cp_balancer_ips = concat(
     module.controller_ips.lb_addresses["ipv4"],

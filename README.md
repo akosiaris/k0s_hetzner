@@ -163,6 +163,28 @@ $ SSH_KNOWN_HOSTS=/dev/null terraform apply -auto-approve -destroy
 
 See [variables.md](variables.md)
 
+# Persistent Volumes
+
+This solution supports 2 different Kubernetes CSI API StorageClass types. The
+first one would be Hetzner Cloud Volumes. There are 2 variants, plain and
+encrypted. The encrypted one requires that a specific variable is passed as the
+encryption key to become available. Look into variables.md for more information
+on how to configure it. Neither is set as the default, application needs to
+explicitly request using them. The reasoning behind this is to avoid surprise
+costs. Getting information about these requires a call like
+
+```
+$ kubectl get storageclasses.storage.k8s.io
+NAME                       PROVISIONER                    RECLAIMPOLICY   VOLUMEBINDINGMODE      ALLOWVOLUMEEXPANSION   AGE
+hcloud-volumes             csi.hetzner.cloud              Delete          WaitForFirstConsumer   true                   35d
+hcloud-volumes-encrypted   csi.hetzner.cloud              Retain          WaitForFirstConsumer   true                   35d
+```
+
+Reclaim policies can be configured as well, again look into variables.md.
+
+Volume expansion is support by Hetzner Cloud, it comes in increments of 10GB
+and only requires updating the PersistentVolumeClaim
+
 # TODO
 
 - [x] Implement an easy way to add more controllers
@@ -183,14 +205,20 @@ See [variables.md](variables.md)
 - [x] Evaluate/support [Hetzner's cloud controller manager](https://github.com/hetznercloud/hcloud-cloud-controller-manager)
 - [x] Evaluate/support [Hetzner's CSI driver](https://github.com/hetznercloud/csi-driver/tree/main)
 - [x] Add support for LUKS encrypted CSI volumes
-- [x] Add prometheus support
-- [x] Hetzner right kinda leads us to use the root user. We apparently can use cloud-inits user-data to get away from that. Apparently it won't help much, stick with what we got
 - [x] Write more docs
 - [x] Support Debian 12
-- [x] Upstream amended CSI driver helm chart - Rejected, won't happen
+- [x] Support Debian 13
 - [x] Switch to using upstream CSI helm chart - https://github.com/hetznercloud/csi-driver/blob/main/docs/kubernetes/README.md#getting-started
 - [x] Replace ferm:
   - [x] workers: Move to Calico Host Endpoints and GlobalNetwork policies
   - [x] controllers: Move to hetzner's firewalling functionality.
 - [x] Test PVC moves between nodes
 - [x] Support non terraform managed (e.g. baremetal) workers
+
+# Reverted/Rejected changes
+
+- [x] Add prometheus support - It was deemed that it's better to manage prometheus versions outside of this repo
+- [x] Upstream amended CSI driver helm chart - Rejected, won't happen, they published their own and it's better
+- [x] Hetzner right kinda leads us to use the root user. We apparently can use cloud-inits user-data to get away from that. Apparently it won't help much, stick with what we got
+- [x] Ingress-nginx. It was deemed better to manage that outside of this repo
+- [x] Any kind of Gateway. It was deemed better to manage that outside of this repo

@@ -25,10 +25,11 @@ locals {
       {
         name          = "hcloud-volumes"
         reclaimPolicy = "Delete"
+        reclaimPolicy = var.hcsi_reclaim_policy
       },
       {
         name          = "hcloud-volumes-encrypted"
-        reclaimPolicy = "Retain"
+        reclaimPolicy = var.hcsi_encrypted_reclaim_policy
         extraParameters = {
           "csi.storage.k8s.io/node-publish-secret-name"      = "encryption-secret"
           "csi.storage.k8s.io/node-publish-secret-namespace" = "kube-system"
@@ -61,10 +62,10 @@ locals {
   lsp = {
     classes = [
       {
-        name = "local-storage"
+        name    = "local-storage"
         hostDir = "/mnt/local-storage"
         storageClass = {
-          reclaimPolicy = "Delete",
+          reclaimPolicy  = "Delete",
           isDefaultClass = true,
         }
       },
@@ -77,9 +78,9 @@ resource "helm_release" "local-static-provisioner" {
     k0s_cluster.k0s,
     local_file.kubeconfig,
   ]
-  name = "local-static-provisioner"
+  name       = "local-static-provisioner"
   repository = "https://kubernetes-sigs.github.io/sig-storage-local-static-provisioner"
-  chart = "local-static-provisioner"
+  chart      = "local-static-provisioner"
   namespace  = "kube-system"
   values = [
     yamlencode(local.lsp),
