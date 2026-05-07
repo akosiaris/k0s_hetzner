@@ -52,7 +52,7 @@ resource "helm_release" "hcloud-csi-driver" {
   repository = "https://charts.hetzner.cloud"
   chart      = "hcloud-csi"
   namespace  = "kube-system"
-  version    = "v2.13.0"
+  version    = "v2.20.2"
   values = [
     yamlencode(local.hcsiconfig),
   ]
