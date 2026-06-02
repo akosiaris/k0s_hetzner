@@ -91,9 +91,9 @@ variable "domain" {
 variable "k0s_version" {
   type        = string
   description = "The version of k0s to target"
-  default     = "1.34.1+k0s.1"
+  default     = "1.35.4+k0s.0"
   validation {
-    condition     = can(regex("1.3[34].[0-9]\\+k0s\\.[0-9]", var.k0s_version))
+    condition     = can(regex("1.3[45].[0-9]\\+k0s\\.[0-9]", var.k0s_version))
     error_message = "Unsupported k0s version provided"
   }
 }
