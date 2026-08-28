@@ -48,6 +48,15 @@ variable "datacenter" {
   description = "The Hetzner datacenter name to create the server in"
 }
 
+variable "location" {
+  type        = string
+  description = "The Hetzner location name to create the server in. Values: nbg1, fsn1, hel1, ash, hil, sin"
+  validation {
+    condition     = contains(["nbg1", "hel1", "fsn1", "ash", "hil", "sin"], var.location)
+    error_message = "Unsupported location provided"
+  }
+}
+
 variable "hostname" {
   type        = string
   description = "You can override the generated name to one of your choose. Only use if spawning up a single server"

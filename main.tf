@@ -62,6 +62,7 @@ module "worker_ips" {
   balanced_services = [80, 443]
   balanced_extraIPs = local.extra_worker_ips
   datacenter        = var.worker_server_datacenter
+  location          = var.worker_server_location
 }
 
 # controller networking section
@@ -82,6 +83,7 @@ module "controller_ips" {
   network_zone            = var.network_zone
   hostname                = var.single_controller_hostname
   datacenter              = var.controller_server_datacenter
+  location                = var.worker_server_location
 }
 
 locals {
@@ -188,6 +190,7 @@ module "workers" {
   type              = var.worker_server_type
   image             = var.worker_server_image
   datacenter        = var.worker_server_datacenter
+  location          = var.worker_server_location
   role              = "worker"
   ssh_pub_key_id    = hcloud_ssh_key.terraform-hcloud-k0s.id
   ssh_priv_key_path = local.ssh_priv_key_path
@@ -204,6 +207,7 @@ module "controllers" {
   type              = var.controller_server_type
   image             = var.controller_server_image
   datacenter        = var.controller_server_datacenter
+  location          = var.worker_server_location
   role              = var.controller_role
   ssh_pub_key_id    = hcloud_ssh_key.terraform-hcloud-k0s.id
   ssh_priv_key_path = local.ssh_priv_key_path

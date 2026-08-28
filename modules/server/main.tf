@@ -22,7 +22,7 @@ resource "hcloud_server" "server" {
   server_type        = var.type
   placement_group_id = hcloud_placement_group.pg.id
   image              = var.image
-  datacenter         = var.datacenter
+  location           = var.location
   user_data = templatefile(
     "modules/server/templates/user-data.tftpl",
     {

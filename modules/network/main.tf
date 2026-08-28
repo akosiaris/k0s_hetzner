@@ -12,22 +12,22 @@ locals {
 # Create Primary IPs for servers. We need this to happen in a different step
 # from creating the servers in order to populate firewall rules
 resource "hcloud_primary_ip" "ipv4" {
-  count         = local.ipv4_count
-  name          = format("ipv4-%s-%s.%s", local.basename, count.index, var.domain)
-  type          = "ipv4"
-  datacenter    = var.datacenter
-  auto_delete   = false # Per comment in provider documentation
+  count       = local.ipv4_count
+  name        = format("ipv4-%s-%s.%s", local.basename, count.index, var.domain)
+  type        = "ipv4"
+  location    = var.location
+  auto_delete = false # Per comment in provider documentation
   labels = {
     "role" : local.role
   }
 }
 
 resource "hcloud_primary_ip" "ipv6" {
-  count         = local.ipv6_count
-  name          = format("ipv6-%s-%s.%s", local.basename, count.index, var.domain)
-  type          = "ipv6"
-  datacenter    = var.datacenter
-  auto_delete   = false # Per comment in provider documentation
+  count       = local.ipv6_count
+  name        = format("ipv6-%s-%s.%s", local.basename, count.index, var.domain)
+  type        = "ipv6"
+  location    = var.location
+  auto_delete = false # Per comment in provider documentation
   labels = {
     "role" : local.role
   }
