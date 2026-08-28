@@ -16,7 +16,6 @@ resource "hcloud_primary_ip" "ipv4" {
   name          = format("ipv4-%s-%s.%s", local.basename, count.index, var.domain)
   type          = "ipv4"
   datacenter    = var.datacenter
-  assignee_type = "server"
   auto_delete   = false # Per comment in provider documentation
   labels = {
     "role" : local.role
@@ -28,7 +27,6 @@ resource "hcloud_primary_ip" "ipv6" {
   name          = format("ipv6-%s-%s.%s", local.basename, count.index, var.domain)
   type          = "ipv6"
   datacenter    = var.datacenter
-  assignee_type = "server"
   auto_delete   = false # Per comment in provider documentation
   labels = {
     "role" : local.role
