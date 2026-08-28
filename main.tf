@@ -61,6 +61,7 @@ module "worker_ips" {
   enable_balancer   = var.balance_worker_plane
   balanced_services = [80, 443]
   balanced_extraIPs = local.extra_worker_ips
+  datacenter        = var.worker_server_datacenter
 }
 
 # controller networking section
@@ -80,6 +81,7 @@ module "controller_ips" {
   network_vswitch_id      = var.network_vswitch_id
   network_zone            = var.network_zone
   hostname                = var.single_controller_hostname
+  datacenter              = var.controller_server_datacenter
 }
 
 locals {
