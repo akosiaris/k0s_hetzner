@@ -1,14 +1,15 @@
+<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_hcloud"></a> [hcloud](#requirement\_hcloud) | 1.52.0 |
+| <a name="requirement_hcloud"></a> [hcloud](#requirement\_hcloud) | 1.66.1 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_hcloud"></a> [hcloud](#provider\_hcloud) | 1.52.0 |
+| <a name="provider_hcloud"></a> [hcloud](#provider\_hcloud) | 1.66.1 |
 
 ## Modules
 
@@ -18,11 +19,11 @@ No modules.
 
 | Name | Type |
 |------|------|
-| [hcloud_firewall.firewall](https://registry.terraform.io/providers/hetznercloud/hcloud/1.52.0/docs/resources/firewall) | resource |
-| [hcloud_firewall_attachment.firewall_attachment](https://registry.terraform.io/providers/hetznercloud/hcloud/1.52.0/docs/resources/firewall_attachment) | resource |
-| [hcloud_placement_group.pg](https://registry.terraform.io/providers/hetznercloud/hcloud/1.52.0/docs/resources/placement_group) | resource |
-| [hcloud_server.server](https://registry.terraform.io/providers/hetznercloud/hcloud/1.52.0/docs/resources/server) | resource |
-| [hcloud_server_network.privnet](https://registry.terraform.io/providers/hetznercloud/hcloud/1.52.0/docs/resources/server_network) | resource |
+| [hcloud_firewall.firewall](https://registry.terraform.io/providers/hetznercloud/hcloud/1.66.1/docs/resources/firewall) | resource |
+| [hcloud_firewall_attachment.firewall_attachment](https://registry.terraform.io/providers/hetznercloud/hcloud/1.66.1/docs/resources/firewall_attachment) | resource |
+| [hcloud_placement_group.pg](https://registry.terraform.io/providers/hetznercloud/hcloud/1.66.1/docs/resources/placement_group) | resource |
+| [hcloud_server.server](https://registry.terraform.io/providers/hetznercloud/hcloud/1.66.1/docs/resources/server) | resource |
+| [hcloud_server_network.privnet](https://registry.terraform.io/providers/hetznercloud/hcloud/1.66.1/docs/resources/server_network) | resource |
 
 ## Inputs
 
@@ -36,6 +37,7 @@ No modules.
 | <a name="input_hostname"></a> [hostname](#input\_hostname) | You can override the generated name to one of your choose. Only use if spawning up a single server | `string` | `null` | no |
 | <a name="input_image"></a> [image](#input\_image) | The Hetzner cloud server image | `string` | n/a | yes |
 | <a name="input_ip_address_ids"></a> [ip\_address\_ids](#input\_ip\_address\_ids) | A map of AF\_INET family and list of terraform primary\_ip ids | `map(list(number))` | n/a | yes |
+| <a name="input_location"></a> [location](#input\_location) | The Hetzner location name to create the server in. Values: nbg1, fsn1, hel1, ash, hil, sin | `string` | n/a | yes |
 | <a name="input_network_subnet_id"></a> [network\_subnet\_id](#input\_network\_subnet\_id) | The Hetzner private network subnet id. It should be the one obtained by a call to the child network module | `string` | `null` | no |
 | <a name="input_role"></a> [role](#input\_role) | The role of the server. It will be set in labels | `string` | n/a | yes |
 | <a name="input_ssh_priv_key_path"></a> [ssh\_priv\_key\_path](#input\_ssh\_priv\_key\_path) | The private part of the above | `string` | n/a | yes |
@@ -47,3 +49,4 @@ No modules.
 | Name | Description |
 |------|-------------|
 | <a name="output_addresses"></a> [addresses](#output\_addresses) | n/a |
+<!-- END_TF_DOCS -->

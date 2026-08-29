@@ -1,15 +1,16 @@
+<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_hcloud"></a> [hcloud](#requirement\_hcloud) | 1.52.0 |
+| <a name="requirement_hcloud"></a> [hcloud](#requirement\_hcloud) | 1.66.1 |
 | <a name="requirement_tls"></a> [tls](#requirement\_tls) | 4.1.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_hcloud"></a> [hcloud](#provider\_hcloud) | 1.52.0 |
+| <a name="provider_hcloud"></a> [hcloud](#provider\_hcloud) | 1.66.1 |
 | <a name="provider_local"></a> [local](#provider\_local) | 2.5.3 |
 | <a name="provider_tls"></a> [tls](#provider\_tls) | 4.1.0 |
 
@@ -27,7 +28,7 @@
 
 | Name | Type |
 |------|------|
-| [hcloud_ssh_key.terraform-hcloud-k0s](https://registry.terraform.io/providers/hetznercloud/hcloud/1.52.0/docs/resources/ssh_key) | resource |
+| [hcloud_ssh_key.terraform-hcloud-k0s](https://registry.terraform.io/providers/hetznercloud/hcloud/1.66.1/docs/resources/ssh_key) | resource |
 | [local_file.ssh_priv_key_path](https://registry.terraform.io/providers/hashicorp/local/latest/docs/resources/file) | resource |
 | [tls_private_key.ed25519](https://registry.terraform.io/providers/hashicorp/tls/4.1.0/docs/resources/private_key) | resource |
 
@@ -41,6 +42,7 @@
 | <a name="input_controller_role"></a> [controller\_role](#input\_controller\_role) | The k0s role for a controller. Values: controller, controller+worker, single | `string` | `"controller"` | no |
 | <a name="input_controller_server_datacenter"></a> [controller\_server\_datacenter](#input\_controller\_server\_datacenter) | The Hetzner datacenter name to create the server in. Values: nbg1-dc3, fsn1-dc14, hel1-dc2, ash-dc1 or hil-dc1 | `string` | `"fsn1-dc14"` | no |
 | <a name="input_controller_server_image"></a> [controller\_server\_image](#input\_controller\_server\_image) | The Hetzner cloud server image. Values: debian-11, debian-12, debian-13 | `string` | `"debian-13"` | no |
+| <a name="input_controller_server_location"></a> [controller\_server\_location](#input\_controller\_server\_location) | The Hetzner location name to create the server in. Values: nbg1, fsn1, hel1, ash, hil, sin | `string` | `"fsn1"` | no |
 | <a name="input_controller_server_type"></a> [controller\_server\_type](#input\_controller\_server\_type) | The Hetzner cloud server type. Values: cax11, cax21, cax31, cax41 (all ARM64) | `string` | `"cax11"` | no |
 | <a name="input_domain"></a> [domain](#input\_domain) | The domain of all hosts. Will be used to generate all PTRs and names | `string` | n/a | yes |
 | <a name="input_enable_ipv4"></a> [enable\_ipv4](#input\_enable\_ipv4) | Whether an IPv4 address should be allocated | `bool` | `true` | no |
@@ -53,7 +55,8 @@
 | <a name="input_hcsi_encrypted_reclaim_policy"></a> [hcsi\_encrypted\_reclaim\_policy](#input\_hcsi\_encrypted\_reclaim\_policy) | The reclaim policy of hcloud-volumes-encrypted | `string` | `"Delete"` | no |
 | <a name="input_hcsi_encryption_key"></a> [hcsi\_encryption\_key](#input\_hcsi\_encryption\_key) | If specified, a Kubernetes StorageClass with LUKS encryption will become available | `string` | `""` | no |
 | <a name="input_hcsi_reclaim_policy"></a> [hcsi\_reclaim\_policy](#input\_hcsi\_reclaim\_policy) | The reclaim policy of hcloud-volumes | `string` | `"Delete"` | no |
-| <a name="input_k0s_version"></a> [k0s\_version](#input\_k0s\_version) | The version of k0s to target | `string` | `"1.33.4+k0s.0"` | no |
+| <a name="input_k0s_version"></a> [k0s\_version](#input\_k0s\_version) | The version of k0s to target | `string` | `"v1.36.3+k0s.2"` | no |
+| <a name="input_kube_apiserver_flags"></a> [kube\_apiserver\_flags](#input\_kube\_apiserver\_flags) | A map of parameters to kube-apiserver. Defaults to service-node-port-range: 1-65535 | `map(string)` | <pre>{<br/>  "service-node-port-range": "1-65535"<br/>}</pre> | no |
 | <a name="input_lsp_isDefault"></a> [lsp\_isDefault](#input\_lsp\_isDefault) | Whether Local Static Provisioner is the default Storage Class or not | `bool` | `true` | no |
 | <a name="input_lsp_reclaim_policy"></a> [lsp\_reclaim\_policy](#input\_lsp\_reclaim\_policy) | The reclaim policy of local-storage | `string` | `"Delete"` | no |
 | <a name="input_network_ip_range"></a> [network\_ip\_range](#input\_network\_ip\_range) | A CIDR in the RFC1918 space for the Hetzner private network. This is an umbrella entity, don't be frugal | `string` | `"10.100.0.0/16"` | no |
@@ -67,6 +70,7 @@
 | <a name="input_worker_count"></a> [worker\_count](#input\_worker\_count) | The number of workers. Defaults to 3 | `number` | `3` | no |
 | <a name="input_worker_server_datacenter"></a> [worker\_server\_datacenter](#input\_worker\_server\_datacenter) | The Hetzner datacenter name to create the server in. Values: nbg1-dc3, fsn1-dc14, hel1-dc2, ash-dc1 or hil-dc1 | `string` | `"fsn1-dc14"` | no |
 | <a name="input_worker_server_image"></a> [worker\_server\_image](#input\_worker\_server\_image) | The Hetzner cloud server image. Values: debian-11, debian-12 | `string` | `"debian-12"` | no |
+| <a name="input_worker_server_location"></a> [worker\_server\_location](#input\_worker\_server\_location) | The Hetzner location name to create the server in. Values: nbg1, fsn1, hel1, ash, hil, sin | `string` | `"fsn1"` | no |
 | <a name="input_worker_server_type"></a> [worker\_server\_type](#input\_worker\_server\_type) | The Hetzner cloud server type. Values: cax11, cax21, cax31, cax41 (all ARM64) | `string` | `"cax11"` | no |
 
 ## Outputs
@@ -76,3 +80,4 @@
 | <a name="output_controller_ip_addresses"></a> [controller\_ip\_addresses](#output\_controller\_ip\_addresses) | n/a |
 | <a name="output_lb_ip_addresses"></a> [lb\_ip\_addresses](#output\_lb\_ip\_addresses) | n/a |
 | <a name="output_worker_ip_addresses"></a> [worker\_ip\_addresses](#output\_worker\_ip\_addresses) | n/a |
+<!-- END_TF_DOCS -->

@@ -1,3 +1,4 @@
+<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
@@ -46,6 +47,7 @@ No modules.
 | <a name="input_hcsi_encryption_key"></a> [hcsi\_encryption\_key](#input\_hcsi\_encryption\_key) | If specified, a Kubernetes StorageClass with LUKS encryption will become available | `string` | `""` | no |
 | <a name="input_hcsi_reclaim_policy"></a> [hcsi\_reclaim\_policy](#input\_hcsi\_reclaim\_policy) | The reclaim policy of hcloud-volumes | `string` | n/a | yes |
 | <a name="input_k0s_version"></a> [k0s\_version](#input\_k0s\_version) | The version of k0s to target | `string` | n/a | yes |
+| <a name="input_kube_apiserver_flags"></a> [kube\_apiserver\_flags](#input\_kube\_apiserver\_flags) | A map of parameters to kube-apiserver | `map(string)` | n/a | yes |
 | <a name="input_lsp_isDefault"></a> [lsp\_isDefault](#input\_lsp\_isDefault) | Whether Local Static Provisioner is the default Storage Class or not | `bool` | n/a | yes |
 | <a name="input_lsp_reclaim_policy"></a> [lsp\_reclaim\_policy](#input\_lsp\_reclaim\_policy) | The reclaim policy of local-storage | `string` | n/a | yes |
 | <a name="input_ssh_priv_key_path"></a> [ssh\_priv\_key\_path](#input\_ssh\_priv\_key\_path) | The private part of the above | `string` | n/a | yes |
@@ -54,3 +56,4 @@ No modules.
 ## Outputs
 
 No outputs.
+<!-- END_TF_DOCS -->
