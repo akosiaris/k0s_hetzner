@@ -24,7 +24,6 @@ locals {
     storageClasses = [
       {
         name          = "hcloud-volumes"
-        reclaimPolicy = "Delete"
         reclaimPolicy = var.hcsi_reclaim_policy
       },
       {
