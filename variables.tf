@@ -274,3 +274,11 @@ variable "extra_workers" {
   description = "A map of objects containing IPv4/IPv6 public and private addresses. Use it to add workers that aren't terraform resources, e.g. baremetal servers"
   default     = {}
 }
+
+variable "kube_apiserver_flags" {
+  type        = map(string)
+  description = "A map of parameters to kube-apiserver. Defaults to service-node-port-range: 1-65535"
+  default = {
+    service-node-port-range = "1-65535"
+  }
+}

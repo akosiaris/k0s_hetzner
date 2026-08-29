@@ -257,6 +257,7 @@ module "k0s" {
   hcsi_encrypted_reclaim_policy = var.hcsi_encrypted_reclaim_policy
   lsp_reclaim_policy            = var.lsp_reclaim_policy
   lsp_isDefault                 = var.lsp_isDefault
+  kube_apiserver_flags          = var.kube_apiserver_flags
 
   cp_balancer_ips = concat(
     module.controller_ips.lb_addresses["ipv4"],

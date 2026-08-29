@@ -12,6 +12,7 @@ resource "k0s_cluster" "k0s" {
     # TODO: Revisit this, it can probably be done better
     controller_lb_address   = length(var.cp_balancer_ips) > 0 ? var.cp_balancer_ips[0] : "",
     controller_ip_addresses = local.controller_ips,
+    api_extraArgs           = var.kube_apiserver_flags,
   })
   hosts = concat(
     [

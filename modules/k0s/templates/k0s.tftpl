@@ -18,9 +18,12 @@ spec:
     - 127.0.0.1
     k0sApiPort: 9443
     port: 6443
+    %{~ if api_extraArgs != null ~}
     extraArgs:
-      service-node-port-range: 1-65535
-      event-ttl: 24h0m0s
+    %{~ for k, v in api_extraArgs ~}
+      ${k}: ${v}
+    %{~ endfor ~}
+    %{~ endif ~}
   controllerManager: {}
   extensions:
     helm:

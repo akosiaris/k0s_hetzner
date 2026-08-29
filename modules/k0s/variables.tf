@@ -121,3 +121,8 @@ variable "firewall_rules" {
   description = "A map of firewall holes. The keys are arbitrary strings, the values objects with proto, ports, cidrs keys"
   default     = {}
 }
+
+variable "kube_apiserver_flags" {
+  type        = map(string)
+  description = "A map of parameters to kube-apiserver"
+}
