@@ -3,13 +3,13 @@
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_hcloud"></a> [hcloud](#requirement\_hcloud) | 1.66.1 |
+| <a name="requirement_hcloud"></a> [hcloud](#requirement\_hcloud) | 1.68.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_hcloud"></a> [hcloud](#provider\_hcloud) | 1.66.1 |
+| <a name="provider_hcloud"></a> [hcloud](#provider\_hcloud) | 1.68.0 |
 
 ## Modules
 
@@ -19,19 +19,19 @@ No modules.
 
 | Name | Type |
 |------|------|
-| [hcloud_load_balancer.lb](https://registry.terraform.io/providers/hetznercloud/hcloud/1.66.1/docs/resources/load_balancer) | resource |
-| [hcloud_load_balancer_network.lb_privnet](https://registry.terraform.io/providers/hetznercloud/hcloud/1.66.1/docs/resources/load_balancer_network) | resource |
-| [hcloud_load_balancer_service.service](https://registry.terraform.io/providers/hetznercloud/hcloud/1.66.1/docs/resources/load_balancer_service) | resource |
-| [hcloud_load_balancer_target.extra](https://registry.terraform.io/providers/hetznercloud/hcloud/1.66.1/docs/resources/load_balancer_target) | resource |
-| [hcloud_load_balancer_target.target](https://registry.terraform.io/providers/hetznercloud/hcloud/1.66.1/docs/resources/load_balancer_target) | resource |
-| [hcloud_network.privnet](https://registry.terraform.io/providers/hetznercloud/hcloud/1.66.1/docs/resources/network) | resource |
-| [hcloud_network_subnet.privnet_subnet](https://registry.terraform.io/providers/hetznercloud/hcloud/1.66.1/docs/resources/network_subnet) | resource |
-| [hcloud_primary_ip.ipv4](https://registry.terraform.io/providers/hetznercloud/hcloud/1.66.1/docs/resources/primary_ip) | resource |
-| [hcloud_primary_ip.ipv6](https://registry.terraform.io/providers/hetznercloud/hcloud/1.66.1/docs/resources/primary_ip) | resource |
-| [hcloud_rdns.ipv4](https://registry.terraform.io/providers/hetznercloud/hcloud/1.66.1/docs/resources/rdns) | resource |
-| [hcloud_rdns.ipv6](https://registry.terraform.io/providers/hetznercloud/hcloud/1.66.1/docs/resources/rdns) | resource |
-| [hcloud_rdns.lb_ipv4](https://registry.terraform.io/providers/hetznercloud/hcloud/1.66.1/docs/resources/rdns) | resource |
-| [hcloud_rdns.lb_ipv6](https://registry.terraform.io/providers/hetznercloud/hcloud/1.66.1/docs/resources/rdns) | resource |
+| [hcloud_load_balancer.lb](https://registry.terraform.io/providers/hetznercloud/hcloud/1.68.0/docs/resources/load_balancer) | resource |
+| [hcloud_load_balancer_network.lb_privnet](https://registry.terraform.io/providers/hetznercloud/hcloud/1.68.0/docs/resources/load_balancer_network) | resource |
+| [hcloud_load_balancer_service.service](https://registry.terraform.io/providers/hetznercloud/hcloud/1.68.0/docs/resources/load_balancer_service) | resource |
+| [hcloud_load_balancer_target.extra](https://registry.terraform.io/providers/hetznercloud/hcloud/1.68.0/docs/resources/load_balancer_target) | resource |
+| [hcloud_load_balancer_target.target](https://registry.terraform.io/providers/hetznercloud/hcloud/1.68.0/docs/resources/load_balancer_target) | resource |
+| [hcloud_network.privnet](https://registry.terraform.io/providers/hetznercloud/hcloud/1.68.0/docs/resources/network) | resource |
+| [hcloud_network_subnet.privnet_subnet](https://registry.terraform.io/providers/hetznercloud/hcloud/1.68.0/docs/resources/network_subnet) | resource |
+| [hcloud_primary_ip.ipv4](https://registry.terraform.io/providers/hetznercloud/hcloud/1.68.0/docs/resources/primary_ip) | resource |
+| [hcloud_primary_ip.ipv6](https://registry.terraform.io/providers/hetznercloud/hcloud/1.68.0/docs/resources/primary_ip) | resource |
+| [hcloud_rdns.ipv4](https://registry.terraform.io/providers/hetznercloud/hcloud/1.68.0/docs/resources/rdns) | resource |
+| [hcloud_rdns.ipv6](https://registry.terraform.io/providers/hetznercloud/hcloud/1.68.0/docs/resources/rdns) | resource |
+| [hcloud_rdns.lb_ipv4](https://registry.terraform.io/providers/hetznercloud/hcloud/1.68.0/docs/resources/rdns) | resource |
+| [hcloud_rdns.lb_ipv6](https://registry.terraform.io/providers/hetznercloud/hcloud/1.68.0/docs/resources/rdns) | resource |
 
 ## Inputs
 

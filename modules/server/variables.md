@@ -3,13 +3,13 @@
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_hcloud"></a> [hcloud](#requirement\_hcloud) | 1.66.1 |
+| <a name="requirement_hcloud"></a> [hcloud](#requirement\_hcloud) | 1.68.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_hcloud"></a> [hcloud](#provider\_hcloud) | 1.66.1 |
+| <a name="provider_hcloud"></a> [hcloud](#provider\_hcloud) | 1.68.0 |
 
 ## Modules
 
@@ -19,11 +19,11 @@ No modules.
 
 | Name | Type |
 |------|------|
-| [hcloud_firewall.firewall](https://registry.terraform.io/providers/hetznercloud/hcloud/1.66.1/docs/resources/firewall) | resource |
-| [hcloud_firewall_attachment.firewall_attachment](https://registry.terraform.io/providers/hetznercloud/hcloud/1.66.1/docs/resources/firewall_attachment) | resource |
-| [hcloud_placement_group.pg](https://registry.terraform.io/providers/hetznercloud/hcloud/1.66.1/docs/resources/placement_group) | resource |
-| [hcloud_server.server](https://registry.terraform.io/providers/hetznercloud/hcloud/1.66.1/docs/resources/server) | resource |
-| [hcloud_server_network.privnet](https://registry.terraform.io/providers/hetznercloud/hcloud/1.66.1/docs/resources/server_network) | resource |
+| [hcloud_firewall.firewall](https://registry.terraform.io/providers/hetznercloud/hcloud/1.68.0/docs/resources/firewall) | resource |
+| [hcloud_firewall_attachment.firewall_attachment](https://registry.terraform.io/providers/hetznercloud/hcloud/1.68.0/docs/resources/firewall_attachment) | resource |
+| [hcloud_placement_group.pg](https://registry.terraform.io/providers/hetznercloud/hcloud/1.68.0/docs/resources/placement_group) | resource |
+| [hcloud_server.server](https://registry.terraform.io/providers/hetznercloud/hcloud/1.68.0/docs/resources/server) | resource |
+| [hcloud_server_network.privnet](https://registry.terraform.io/providers/hetznercloud/hcloud/1.68.0/docs/resources/server_network) | resource |
 
 ## Inputs
 

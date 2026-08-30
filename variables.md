@@ -3,14 +3,14 @@
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_hcloud"></a> [hcloud](#requirement\_hcloud) | 1.66.1 |
+| <a name="requirement_hcloud"></a> [hcloud](#requirement\_hcloud) | 1.68.0 |
 | <a name="requirement_tls"></a> [tls](#requirement\_tls) | 4.1.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_hcloud"></a> [hcloud](#provider\_hcloud) | 1.66.1 |
+| <a name="provider_hcloud"></a> [hcloud](#provider\_hcloud) | 1.68.0 |
 | <a name="provider_local"></a> [local](#provider\_local) | 2.5.3 |
 | <a name="provider_tls"></a> [tls](#provider\_tls) | 4.1.0 |
 
@@ -28,7 +28,7 @@
 
 | Name | Type |
 |------|------|
-| [hcloud_ssh_key.terraform-hcloud-k0s](https://registry.terraform.io/providers/hetznercloud/hcloud/1.66.1/docs/resources/ssh_key) | resource |
+| [hcloud_ssh_key.terraform-hcloud-k0s](https://registry.terraform.io/providers/hetznercloud/hcloud/1.68.0/docs/resources/ssh_key) | resource |
 | [local_file.ssh_priv_key_path](https://registry.terraform.io/providers/hashicorp/local/latest/docs/resources/file) | resource |
 | [tls_private_key.ed25519](https://registry.terraform.io/providers/hashicorp/tls/4.1.0/docs/resources/private_key) | resource |
 
