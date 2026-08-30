@@ -61,7 +61,6 @@ module "worker_ips" {
   enable_balancer   = var.balance_worker_plane
   balanced_services = [80, 443]
   balanced_extraIPs = local.extra_worker_ips
-  datacenter        = var.worker_server_datacenter
   location          = var.worker_server_location
 }
 
@@ -82,7 +81,6 @@ module "controller_ips" {
   network_vswitch_id      = var.network_vswitch_id
   network_zone            = var.network_zone
   hostname                = var.single_controller_hostname
-  datacenter              = var.controller_server_datacenter
   location                = var.worker_server_location
 }
 
@@ -189,7 +187,6 @@ module "workers" {
   amount            = local.worker_count
   type              = var.worker_server_type
   image             = var.worker_server_image
-  datacenter        = var.worker_server_datacenter
   location          = var.worker_server_location
   role              = "worker"
   ssh_pub_key_id    = hcloud_ssh_key.terraform-hcloud-k0s.id
@@ -206,7 +203,6 @@ module "controllers" {
   amount            = local.controller_count
   type              = var.controller_server_type
   image             = var.controller_server_image
-  datacenter        = var.controller_server_datacenter
   location          = var.worker_server_location
   role              = var.controller_role
   ssh_pub_key_id    = hcloud_ssh_key.terraform-hcloud-k0s.id

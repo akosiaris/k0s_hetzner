@@ -35,17 +35,6 @@ variable "hostname" {
   default     = null
 }
 
-#TODO: Remove this
-variable "datacenter" {
-  type        = string
-  description = "The Hetzner datacenter name to create the server in. Values: nbg1-dc3, fsn1-dc14, hel1-dc2, ash-dc1, hil-dc1. Defaults to fsn1-dc14"
-  default     = "fsn1-dc14"
-  validation {
-    condition     = contains(["nbg1-dc3", "fsn1-dc14", "hel1-dc2", "ash-dc1", "hil-dc1"], var.datacenter)
-    error_message = "Unsupported datacenter provided"
-  }
-}
-
 variable "location" {
   type        = string
   description = "The Hetzner location name to create the server in. Values: nbg1, fsn1, hel1, ash, hil, sin"

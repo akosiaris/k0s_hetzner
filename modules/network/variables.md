@@ -42,7 +42,6 @@ No modules.
 | <a name="input_balanced_protocol"></a> [balanced\_protocol](#input\_balanced\_protocol) | The load balanced protocol | `string` | `"tcp"` | no |
 | <a name="input_balanced_services"></a> [balanced\_services](#input\_balanced\_services) | The ports that will get load balanced. NOTE: currently listen and dest port need to be the same | `list(number)` | <pre>[<br/>  6443,<br/>  8132,<br/>  9443<br/>]</pre> | no |
 | <a name="input_balancer_type"></a> [balancer\_type](#input\_balancer\_type) | The load balancer type to deploy in front of the created IPs | `string` | `"lb11"` | no |
-| <a name="input_datacenter"></a> [datacenter](#input\_datacenter) | The Hetzner datacenter name to create the server in. Values: nbg1-dc3, fsn1-dc14, hel1-dc2, ash-dc1, hil-dc1. Defaults to fsn1-dc14 | `string` | `"fsn1-dc14"` | no |
 | <a name="input_domain"></a> [domain](#input\_domain) | The domain of all hosts. Will be used to generate all PTRs | `string` | n/a | yes |
 | <a name="input_enable_balancer"></a> [enable\_balancer](#input\_enable\_balancer) | Whether a balancer should be allocated | `bool` | `false` | no |
 | <a name="input_enable_ipv4"></a> [enable\_ipv4](#input\_enable\_ipv4) | Whether an IPv4 address should be allocated | `bool` | `true` | no |

@@ -43,11 +43,6 @@ variable "image" {
   description = "The Hetzner cloud server image"
 }
 
-variable "datacenter" {
-  type        = string
-  description = "The Hetzner datacenter name to create the server in"
-}
-
 variable "location" {
   type        = string
   description = "The Hetzner location name to create the server in. Values: nbg1, fsn1, hel1, ash, hil, sin"

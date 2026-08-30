@@ -30,7 +30,6 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_amount"></a> [amount](#input\_amount) | The number of servers | `number` | n/a | yes |
-| <a name="input_datacenter"></a> [datacenter](#input\_datacenter) | The Hetzner datacenter name to create the server in | `string` | n/a | yes |
 | <a name="input_domain"></a> [domain](#input\_domain) | The domain of all hosts. Will be used to generate all PTRs | `string` | n/a | yes |
 | <a name="input_enable_network"></a> [enable\_network](#input\_enable\_network) | Enable a Hetzner private network | `bool` | `false` | no |
 | <a name="input_firewall_rules"></a> [firewall\_rules](#input\_firewall\_rules) | A map of firewall holes. The keys are arbitrary strings, the values objects with proto, ports, cidrs keys | <pre>map(object({<br/>    proto = string<br/>    port  = string<br/>    cidrs = list(string)<br/>  }))</pre> | `{}` | no |

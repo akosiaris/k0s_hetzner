@@ -40,7 +40,6 @@
 | <a name="input_balance_worker_plane"></a> [balance\_worker\_plane](#input\_balance\_worker\_plane) | Whether the control plane will be load balanced. Needs > 1 worker | `bool` | `false` | no |
 | <a name="input_controller_count"></a> [controller\_count](#input\_controller\_count) | The number of controllers. Defaults to 3 | `number` | `3` | no |
 | <a name="input_controller_role"></a> [controller\_role](#input\_controller\_role) | The k0s role for a controller. Values: controller, controller+worker, single | `string` | `"controller"` | no |
-| <a name="input_controller_server_datacenter"></a> [controller\_server\_datacenter](#input\_controller\_server\_datacenter) | The Hetzner datacenter name to create the server in. Values: nbg1-dc3, fsn1-dc14, hel1-dc2, ash-dc1 or hil-dc1 | `string` | `"fsn1-dc14"` | no |
 | <a name="input_controller_server_image"></a> [controller\_server\_image](#input\_controller\_server\_image) | The Hetzner cloud server image. Values: debian-11, debian-12, debian-13 | `string` | `"debian-13"` | no |
 | <a name="input_controller_server_location"></a> [controller\_server\_location](#input\_controller\_server\_location) | The Hetzner location name to create the server in. Values: nbg1, fsn1, hel1, ash, hil, sin | `string` | `"fsn1"` | no |
 | <a name="input_controller_server_type"></a> [controller\_server\_type](#input\_controller\_server\_type) | The Hetzner cloud server type. Values: cax11, cax21, cax31, cax41 (all ARM64) | `string` | `"cax11"` | no |
@@ -68,7 +67,6 @@
 | <a name="input_ssh_priv_key_path"></a> [ssh\_priv\_key\_path](#input\_ssh\_priv\_key\_path) | The private SSH for connecting to servers. If left empty, terraform will create a key pair for you | `string` | `null` | no |
 | <a name="input_ssh_pub_key"></a> [ssh\_pub\_key](#input\_ssh\_pub\_key) | Public SSH key for connecting to servers. If left empty, terraform will create a key pair for you | `string` | `null` | no |
 | <a name="input_worker_count"></a> [worker\_count](#input\_worker\_count) | The number of workers. Defaults to 3 | `number` | `3` | no |
-| <a name="input_worker_server_datacenter"></a> [worker\_server\_datacenter](#input\_worker\_server\_datacenter) | The Hetzner datacenter name to create the server in. Values: nbg1-dc3, fsn1-dc14, hel1-dc2, ash-dc1 or hil-dc1 | `string` | `"fsn1-dc14"` | no |
 | <a name="input_worker_server_image"></a> [worker\_server\_image](#input\_worker\_server\_image) | The Hetzner cloud server image. Values: debian-11, debian-12 | `string` | `"debian-12"` | no |
 | <a name="input_worker_server_location"></a> [worker\_server\_location](#input\_worker\_server\_location) | The Hetzner location name to create the server in. Values: nbg1, fsn1, hel1, ash, hil, sin | `string` | `"fsn1"` | no |
 | <a name="input_worker_server_type"></a> [worker\_server\_type](#input\_worker\_server\_type) | The Hetzner cloud server type. Values: cax11, cax21, cax31, cax41 (all ARM64) | `string` | `"cax11"` | no |

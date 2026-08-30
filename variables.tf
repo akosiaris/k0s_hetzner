@@ -126,17 +126,6 @@ variable "worker_server_image" {
   }
 }
 
-# TODO: Remove this
-variable "worker_server_datacenter" {
-  type        = string
-  description = "The Hetzner datacenter name to create the server in. Values: nbg1-dc3, fsn1-dc14, hel1-dc2, ash-dc1 or hil-dc1"
-  default     = "fsn1-dc14"
-  validation {
-    condition     = contains(["nbg1-dc3", "hel1-dc2", "fsn1-dc14", "ash-dc1", "hil-dc1"], var.worker_server_datacenter)
-    error_message = "Unsupported datacenter provided"
-  }
-}
-
 variable "worker_server_location" {
   type        = string
   description = "The Hetzner location name to create the server in. Values: nbg1, fsn1, hel1, ash, hil, sin"
@@ -172,17 +161,6 @@ variable "controller_server_image" {
   validation {
     condition     = can(regex("debian-1[123]", var.controller_server_image))
     error_message = "Unsupported server image provided"
-  }
-}
-
-#TODO: Remove this
-variable "controller_server_datacenter" {
-  type        = string
-  description = "The Hetzner datacenter name to create the server in. Values: nbg1-dc3, fsn1-dc14, hel1-dc2, ash-dc1 or hil-dc1"
-  default     = "fsn1-dc14"
-  validation {
-    condition     = contains(["nbg1-dc3", "hel1-dc2", "fsn1-dc14", "ash-dc1", "hil-dc1", "sin-dc1"], var.controller_server_datacenter)
-    error_message = "Unsupported datacenter provided"
   }
 }
 
